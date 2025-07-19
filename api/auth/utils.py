@@ -1,22 +1,29 @@
-from passlib.hash import bcrypt
-from jose import jwt
+import bcrypt
+import jwt
 from datetime import datetime, timedelta
+import os
+from dotenv import load_dotenv
 
-SECRET_KEY = "your_secret_key"
+# ✅ Load the .env file
+load_dotenv()
+
+# ✅ Get SECRET_KEY from environment
+SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
 
 def hash_password(password: str) -> str:
-    return bcrypt.hash(password)
+    return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
 
-def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return bcrypt.verify(plain_password, hashed_password)
+def verify_password(password: str, hashed: str) -> bool:
+    return bcrypt.checkpw(password.encode(), hashed.encode())
 
-def create_jwt_token(email: str) -> str:
-    expire = datetime.utcnow() + timedelta(hours=1)
-    to_encode = {"sub": email, "exp": expire}
-    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+def create_jwt(email: str, nickname: str) -> str:
+    payload = {
+        "sub": email,
+        "nickname": nickname,
+        "exp": datetime.utcnow() + timedelta(hours=6)
+    }
+    return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
 
-import hashlib
-
-def hash_password(password: str) -> str:
-    return hashlib.sha256(password.encode()).hexdigest()
+def decode_jwt(token: str):
+    return jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])

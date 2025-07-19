@@ -1,4 +1,6 @@
 // static/script.js
+
+// Handle registration
 document.getElementById("register-form").addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -16,8 +18,14 @@ document.getElementById("register-form").addEventListener("submit", async (e) =>
 
   const data = await res.json();
   document.getElementById("message").innerText = data.message || data.detail;
+
+  if (res.ok && data.token) {
+    localStorage.setItem("token", data.token);
+    window.location.href = "/static/dashboard.html";
+  }
 });
 
+// Handle login
 document.getElementById("login-form").addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -34,4 +42,9 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
 
   const data = await res.json();
   document.getElementById("message").innerText = data.message || data.detail;
+
+  if (res.ok && data.token) {
+    localStorage.setItem("token", data.token);
+    window.location.href = "/static/dashboard.html";
+  }
 });
