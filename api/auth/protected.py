@@ -1,26 +1,34 @@
 # FILE: api/auth/protected.py
 
-from fastapi import APIRouter, Depends, Header, HTTPException
+from fastapi import APIRouter, Request, HTTPException
 from .utils import decode_jwt
 
 protected = APIRouter()
 
-# ✅ JWT Auth dependency
-def get_current_user(authorization: str = Header(...)):
+@protected.get("/auth/me")
+def get_current_user_from_cookie(request: Request):
+    token = request.cookies.get("token")
+    if not token:
+        raise HTTPException(status_code=401, detail="No token found")
+
     try:
-        scheme, token = authorization.split()
-        if scheme.lower() != "bearer":
-            raise ValueError("Invalid auth scheme")
         payload = decode_jwt(token)
         return {
             "email": payload["sub"],
-            "nickname": payload["nickname"]
+            "nickname": payload.get("nickname", "")
         }
     except Exception:
-        raise HTTPException(status_code=401, detail="Unauthorized")
+        raise HTTPException(status_code=401, detail="Invalid token")
 
-# ✅ Protected route
+
 @protected.get("/dashboard")
-def dashboard(current_user: dict = Depends(get_current_user)):
-    return {"message": f"Welcome to your dashboard, {current_user['nickname']}!"}
+def dashboard(request: Request):
+    token = request.cookies.get("token")
+    if not token:
+        raise HTTPException(status_code=401, detail="No token found")
 
+    try:
+        payload = decode_jwt(token)
+        return {"message": f"Welcome to your dashboard, {payload.get('nickname', 'User')}!"}
+    except Exception:
+        raise HTTPException(status_code=401, detail="Invalid token")

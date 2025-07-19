@@ -1,9 +1,12 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
+from fastapi.responses import JSONResponse, RedirectResponse
+
 from .models import RegisterRequest, LoginRequest
 from .utils import hash_password, verify_password, create_jwt
 from .db import users_table
 
 router = APIRouter()
+
 
 @router.post("/register")
 def register_user(data: RegisterRequest):
@@ -17,9 +20,17 @@ def register_user(data: RegisterRequest):
         "nickname": data.nickname
     })
 
-    # ✅ Use data directly (it's what we just stored)
     token = create_jwt(data.email, data.nickname)
-    return {"message": "User registered", "token": token}
+
+    response = JSONResponse(content={"message": "User registered"})
+    response.set_cookie(
+        key="token",
+        value=token,
+        httponly=False,
+        secure=False,
+        samesite="Lax"
+    )
+    return response
 
 
 @router.post("/login")
@@ -28,6 +39,21 @@ def login_user(data: LoginRequest):
     if not user or not verify_password(data.password, user["password"]):
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
-    # ✅ Use nickname from the retrieved user
     token = create_jwt(user["email"], user["nickname"])
-    return {"message": "Login successful", "token": token}
+
+    response = JSONResponse(content={"message": "Login successful"})
+    response.set_cookie(
+        key="token",
+        value=token,
+        httponly=False,
+        secure=False,
+        samesite="Lax"
+    )
+    return response
+
+
+@router.get("/logout")
+def logout_user():
+    response = RedirectResponse(url="/")
+    response.delete_cookie("token")
+    return response
