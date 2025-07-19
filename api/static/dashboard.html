@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard</title>
+</head>
+<body>
+  <h1 id="welcome">Loading...</h1>
+  <script>
+    async function loadDashboard() {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        window.location.href = "/"; // Redirect to login if not authenticated
+        return;
+      }
+
+      const res = await fetch("/dashboard", {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      });
+
+      if (!res.ok) {
+        document.getElementById("welcome").innerText = "Unauthorized. Please log in again.";
+        return;
+      }
+
+      const data = await res.json();
+      document.getElementById("welcome").innerText = data.message;
+    }
+
+    loadDashboard();
+  </script>
+</body>
+</html>

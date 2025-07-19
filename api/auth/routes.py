@@ -1,52 +1,33 @@
 from fastapi import APIRouter, HTTPException
-from boto3.dynamodb.conditions import Attr
-import uuid
-
 from .models import RegisterRequest, LoginRequest
-from .utils import hash_password
+from .utils import hash_password, verify_password, create_jwt
 from .db import users_table
 
 router = APIRouter()
 
-# ✅ Register Route
 @router.post("/register")
-def register_user(user: RegisterRequest):
-    # Check if email already exists
-    response = users_table.scan(
-        FilterExpression=Attr("email").eq(user.email)
-    )
-    if response.get("Items"):
+def register_user(data: RegisterRequest):
+    existing_user = users_table.get_item(Key={"email": data.email}).get("Item")
+    if existing_user:
         raise HTTPException(status_code=400, detail="Email already registered")
 
-    hashed_password = hash_password(user.password)
-    user_id = str(uuid.uuid4())
-
     users_table.put_item(Item={
-        "id": user_id,
-        "email": user.email,
-        "password": hashed_password,
-        "nickname": user.nickname
+        "email": data.email,
+        "password": hash_password(data.password),
+        "nickname": data.nickname
     })
 
-    return {"message": "User registered successfully", "user_id": user_id}
+    # ✅ Use data directly (it's what we just stored)
+    token = create_jwt(data.email, data.nickname)
+    return {"message": "User registered", "token": token}
 
-# ✅ Login Route
+
 @router.post("/login")
-def login_user(credentials: LoginRequest):
-    # Hash the input password
-    hashed_input = hash_password(credentials.password)
-
-    # Search by email
-    response = users_table.scan(
-        FilterExpression=Attr("email").eq(credentials.email)
-    )
-    items = response.get("Items", [])
-
-    if not items or items[0]["password"] != hashed_input:
+def login_user(data: LoginRequest):
+    user = users_table.get_item(Key={"email": data.email}).get("Item")
+    if not user or not verify_password(data.password, user["password"]):
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
-    return {
-        "message": "Login successful",
-        "user_id": items[0]["id"],
-        "nickname": items[0]["nickname"]
-    }
+    # ✅ Use nickname from the retrieved user
+    token = create_jwt(user["email"], user["nickname"])
+    return {"message": "Login successful", "token": token}
