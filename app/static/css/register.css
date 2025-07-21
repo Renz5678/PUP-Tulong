@@ -1,0 +1,131 @@
+/* Page layout */
+body {
+  font-family: "Inter", Helvetica, Arial, sans-serif;
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+/* Register page title */
+h1 {
+  color: #6d090b;
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 0 0 20px 0;
+}
+
+h2 {
+  color: #6d090b;
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 0 0 20px 0;
+}
+
+/* Form styling */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Input fields */
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+  padding: 15px 20px;
+  border-radius: 25px;
+  border: 2px solid #6d090b;
+  font-size: 1.1rem;
+  font-weight: bold;
+  outline: none;
+  box-sizing: border-box;
+  background-color: white;
+  color: #6d090b;
+  transition: border-color 0.3s ease;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="text"]:focus {
+  border-color: #a01520;
+}
+
+input[type="email"]::placeholder,
+input[type="password"]::placeholder,
+input[type="text"]::placeholder {
+  color: #999;
+  font-weight: 600;
+}
+
+/* Register button */
+button[type="submit"] {
+  background-color: #6d090b;
+  color: white;
+  padding: 15px 30px;
+  border-radius: 25px;
+  border: none;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+button[type="submit"]:hover {
+  background-color: #a01520;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(109, 9, 11, 0.3);
+}
+
+/* Login link */
+p {
+  text-align: center;
+  margin: 20px 0;
+  color: #333;
+  font-weight: 500;
+}
+
+p a {
+  color: #6d090b;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+p a:hover {
+  text-decoration: underline;
+}
+
+/* Message area */
+#message {
+  margin-top: 20px;
+  color: #6d090b;
+  font-weight: bold;
+  font-size: 1rem;
+  text-align: center;
+  max-width: 400px;
+}
+
+/* OTP form - initially hidden */
+#otp-form {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Success and error messages */
+.success {
+  color: #28a745;
+}
+
+.error {
+  color: #dc3545;
+}

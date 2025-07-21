@@ -1,0 +1,228 @@
+/* Page layout */
+body {
+  font-family: "Inter", Helvetica, Arial, sans-serif;
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+/* Login container */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  max-width: 400px;
+  width: 100%;
+}
+
+/* Login card - maroon container */
+.login-card {
+  background-color: #6d090b;
+  border-radius: 30px;
+  padding: 20px 30px 30px 30px;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Login title */
+.login-title {
+  color: white;
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 0 0 10px 0;
+}
+
+/* Horizontal line */
+.horizontal-line {
+  width: 100%;
+  height: 1px;
+  background-color: white;
+  margin: 5px 0;
+}
+
+/* Form styling */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Input fields */
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+  padding: 15px 20px;
+  border-radius: 25px;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: bold;
+  outline: none;
+  box-sizing: border-box;
+  background-color: white;
+  color: #6d090b;
+}
+
+input[type="email"]::placeholder,
+input[type="password"]::placeholder {
+  color: #cccccc;
+  font-weight: 600;
+}
+
+/* Form footer with forgot password and continue button */
+.form-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0px 0;
+}
+
+/* Forgot password checkbox and label */
+.forgot-password {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.forgot-password:hover {
+  opacity: 0.8;
+}
+
+.question-box {
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  color: #6d090b;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.question-box:hover {
+  background-color: #f0f0f0;
+}
+
+.forgot-password span {
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  user-select: none;
+}
+
+/* Continue button */
+.continue-btn {
+  background-color: white;
+  color: #6d090b;
+  padding: 10px 22px;
+  border-radius: 20px;
+  border: none;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.continue-btn:hover {
+  background-color: #f0f0f0;
+  transform: translateY(-1px);
+}
+
+.continue-icon {
+  flex-shrink: 0;
+}
+
+/* Google button */
+.google-btn {
+  background-color: white;
+  color: #333;
+  padding: 10px 20px;
+  border-radius: 25px;
+  border: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-top: 0px;
+}
+
+.google-btn:hover {
+  background-color: #f8f8f8;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.google-icon {
+  font-weight: bold;
+  color: #4285f4;
+  font-size: 1.2rem;
+}
+
+/* Divider */
+.divider {
+  color: #666;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 10px 0;
+}
+
+/* Register button */
+.register-btn {
+  background-color: #ffa500;
+  color: white;
+  padding: 18px 40px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+  display: block;
+}
+
+.register-btn:hover {
+  background-color: #ff8c00;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 165, 0, 0.3);
+}
+
+/* Message area */
+#message {
+  margin-top: 20px;
+  color: #6d090b;
+  font-weight: bold;
+  font-size: 1rem;
+  text-align: center;
+}
+
+/* Remove old styles */
+h1, h2, h3 {
+  margin: 0;
+}
+
+button {
+  /* Reset default button styles - specific styles are applied above */
+}
