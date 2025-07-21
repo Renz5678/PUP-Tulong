@@ -11,6 +11,8 @@ from auth.routes import router as auth_router
 from auth.google import router as google_router
 from auth.protected import protected
 
+import dashboard  # ✅ Import your dashboard API
+
 import os
 
 # ✅ Load environment variables
@@ -38,16 +40,25 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/")
 def read_index():
-    return FileResponse("static/index.html")
+    return FileResponse("static/login.html")
 
-# ✅ Include routers (no Facebook anymore)
+@app.get("/login")
+def login_page():
+    return FileResponse("static/login.html")
+
+@app.get("/register")
+def register_page():
+    return FileResponse("static/register.html")
+
+# ✅ Include routers
 app.include_router(auth_router, prefix="/auth")
 app.include_router(google_router)
 app.include_router(protected)
+app.include_router(dashboard.router)  # ✅ Mount your dashboard API
 
-# ✅ Optional: fallback for frontend routing (like React or Vue)
+# ✅ Optional: fallback for frontend routing
 @app.exception_handler(StarletteHTTPException)
 async def custom_404_handler(request: Request, exc: StarletteHTTPException):
     if exc.status_code == 404:
-        return FileResponse("static/index.html")
+        return FileResponse("static/login.html")
     return HTMLResponse(content=str(exc.detail), status_code=exc.status_code)
