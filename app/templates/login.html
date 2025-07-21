@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" />
+  <title>PUP Tulong Login</title>
+
+  <!-- ✅ Corrected path to CSS -->
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <h1>PUP Tulong</h1>
+
+  <h2>Login</h2>
+  <form id="login-form">
+    <input id="login-email" type="email" placeholder="Email" required />
+    <input id="login-password" type="password" placeholder="Password" required />
+    <button type="submit">Login</button>
+  </form>
+
+  <h3>Or continue with</h3>
+  <button id="google-login" type="button">Continue with Google</button>
+
+  <p>Don't have an account? <a href="/register">Register here</a></p>
+
+  <p id="message"></p>
+
+  <!-- ✅ Corrected path to JS -->
+  <script src="/static/js/loginscript.js"></script>
+</body>
+</html>
