@@ -1,0 +1,134 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #fff;
+  color: #000;
+  min-height: 100vh;
+}
+
+.container-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 450px;
+  min-height: 460px;
+  padding: 2rem 1.5rem;
+  background-color: #fff;
+  border: 5px solid #6D090B;
+  border-radius: 1rem;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.logo {
+  max-width: 60px;
+  margin-bottom: 0.5rem;
+}
+
+.text {
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.email {
+  font-weight: 700;
+  margin: 0.25rem 0 1rem;
+  font-size: 14px;
+}
+
+.otp-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.otp-boxes {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.otp-input {
+  width: 3rem;
+  height: 3rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  border: 2px solid #000;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.otp-input:focus {
+  border-color: #6D090B;
+}
+
+button {
+  font-family: Poppins, sans-serif;
+  letter-spacing: 1px;
+  width: 65%;
+  height: 3rem;
+  background-color: #6D090B;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+  background-color: #8B0A0D;
+  transform: scale(1.03);
+}
+
+.otp-message {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .container {
+    max-width: 90%;
+    padding: 1.5rem;
+  }
+
+  .otp-input {
+    width: 2.7rem;
+    height: 2.7rem;
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .otp-input {
+    width: 2.4rem;
+    height: 2.4rem;
+    font-size: 1rem;
+    margin: 0.3rem;
+  }
+
+  .container {
+    border-width: 3px;
+  }
+}

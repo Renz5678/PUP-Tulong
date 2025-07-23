@@ -6,6 +6,7 @@ class TaskCreateRequest(BaseModel):
     title: str
     description: str
     requester_id: str  # DynamoDB user ID
+    image_url: Optional[str] = None # Added image_url here
 
 class TaskResponse(BaseModel):
     task_id: str
@@ -14,3 +15,4 @@ class TaskResponse(BaseModel):
     status: str
     created_at: datetime
     requester_id: str
+    image_url: Optional[str] = None # Added image_url here

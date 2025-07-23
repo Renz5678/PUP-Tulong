@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PUP Tulong - Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/static/css/dashboard.css"/>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav-container">
+    <div class="nav-left">
+      <div class="nav-item active" data-tab="dashboard">✪ Dashboard</div>
+      <div class="nav-item" data-tab="tasks">Task Manager</div>
+      <div class="nav-item" data-tab="requests">Personal Requests</div>
+      <div class="nav-item" data-tab="ratings">Your Ratings</div>
+    </div>
+    <div class="nav-right">
+      <button class="notification-icon" id="notif-btn">🔔</button>
+      <div class="profile-section" id="profile-btn">
+        <div class="profile-avatar"></div>
+        <span>Profile</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-container">
+    <section class="tasks-grid" id="tasks-container">
+      <!-- Tasks dynamically injected here -->
+    </section>
+  </main>
+
+  <!-- External JavaScript -->
+<div id="task-modal" class="modal hidden">
+  <div class="modal-content" id="modal-body">
+    <span class="close" id="modal-close">&times;</span>
+    <!-- Modal content will be injected here -->
+  </div>
+</div>
+  <script src="/static/js/dashboard.js"></script>
+</body>
+</html>

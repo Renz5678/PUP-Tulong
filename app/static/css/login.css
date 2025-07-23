@@ -119,8 +119,7 @@ body.dark-mode .form-control:focus {
   width: 1rem;
   height: 1rem;
   background-color: transparent;
-  color: white;
-  border: 1px solid white;
+  border: none;
   border-radius: 0.15rem;
   font-weight: bold;
   font-size: 0.7rem;

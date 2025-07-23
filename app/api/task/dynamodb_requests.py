@@ -18,7 +18,7 @@ def get_table():
         logger.error(f"❌ Error connecting to DynamoDB: {e}")
         raise
 
-def create_request(email: str, nickname: str, title: str, description: str, tags: list, deadline: str):
+def create_request(email: str, nickname: str, title: str, description: str, tags: list, deadline: str, image_url: str):
     request_id = str(uuid.uuid4())
     item = {
         "id": request_id,
@@ -28,6 +28,7 @@ def create_request(email: str, nickname: str, title: str, description: str, tags
         "description": description,
         "tags": tags,
         "deadline": deadline,
+        "image_url": image_url,  # ✅ Added this line
         "created_at": datetime.utcnow().isoformat(),
     }
     try:

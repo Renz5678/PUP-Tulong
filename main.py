@@ -32,7 +32,10 @@ app.add_middleware(
 # ✅ Session middleware for OAuth (cookie-based)
 app.add_middleware(
     SessionMiddleware,
-    secret_key=os.getenv("SESSION_SECRET", "super-secret-key")
+    secret_key=os.getenv("SESSION_SECRET", "super-secret-key"),
+    same_site="lax",           # Required for modern browsers
+    max_age=60 * 60 * 24,      # 1 day session
+    session_cookie="session",  # Optional: name it
 )
 
 # ✅ Mount static files (CSS, JS)
@@ -56,7 +59,7 @@ def register(request: Request):
 
 @app.get("/dashboard", response_class=HTMLResponse)
 def dashboard(request: Request):
-    return templates.TemplateResponse("dashboard.html", {"request": request})
+    return templates.TemplateResponse("pages/dashboard.html", {"request": request})
 
 # ✅ Include routers
 app.include_router(auth_router, prefix="/auth")

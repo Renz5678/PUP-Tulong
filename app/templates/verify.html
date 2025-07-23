@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Verify OTP</title>
+  <link rel="stylesheet" href="/static/css/verify.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container-wrapper">
+    <div class="container">
+      <img src="Vector.png" alt="Logo" class="logo" />
+      <h2 class="text">OTP Verification</h2>
+      <p>One-Time Password has been sent via Email to:</p>
+      <p class="email">a**********o@gmail.com</p>
+
+      <p>Enter the OTP below to verify your account:</p>
+
+      <form id="otp-form" class="otp-form">
+        <div class="otp-boxes">
+          <input type="text" maxlength="1" class="otp-input" />
+          <input type="text" maxlength="1" class="otp-input" />
+          <input type="text" maxlength="1" class="otp-input" />
+          <input type="text" maxlength="1" class="otp-input" />
+          <input type="text" maxlength="1" class="otp-input" />
+          <input type="text" maxlength="1" class="otp-input" />
+        </div>
+        <button type="submit">Verify OTP</button>
+      </form>
+
+      <p id="otp-message" class="otp-message"></p>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("otp-form");
+    const inputs = document.querySelectorAll(".otp-input");
+    const message = document.getElementById("otp-message");
+    const email = new URLSearchParams(window.location.search).get("email");
+
+    inputs.forEach((input, i) => {
+      input.addEventListener("input", () => {
+        if (input.value && i < inputs.length - 1) inputs[i + 1].focus();
+      });
+
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Backspace" && !input.value && i > 0) inputs[i - 1].focus();
+      });
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const otp = Array.from(inputs).map(input => input.value.trim()).join("");
+
+      const formData = new FormData();
+      formData.append("email", email);
+      formData.append("otp", otp);
+
+      try {
+        const res = await fetch("/auth/verify-otp", {
+          method: "POST",
+          body: formData
+        });
+
+        const data = await res.json();
+        message.textContent = data.message || data.detail;
+        message.style.color = res.ok ? "green" : "red";
+
+        if (res.ok) {
+          setTimeout(() => window.location.href = "/dashboard", 1500);
+        }
+      } catch (err) {
+        message.textContent = "Network error.";
+        message.style.color = "red";
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>

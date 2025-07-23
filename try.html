@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Task Modal View</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
+      margin: 0;
+    }
+
+    .tasks-grid {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .task-card {
+      width: 280px;
+      background: #252525;
+      color: white;
+      border-radius: 15px;
+      padding: 20px;
+      border: 1px solid #404040;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .task-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .task-header {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .task-avatar {
+      width: 40px;
+      height: 40px;
+      background: #404040;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .task-info h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .task-author {
+      font-size: 12px;
+      color: #ccc;
+    }
+
+    .task-description {
+      margin: 15px 0;
+      line-height: 1.4;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(2px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      overflow-y: auto;
+    }
+
+    .modal-content {
+      background: #1c1c1c;
+      padding: 30px;
+      max-width: 600px;
+      width: 90%;
+      color: white;
+      border-radius: 20px;
+      position: relative;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+      animation: zoomIn 0.3s ease;
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      background: transparent;
+      border: none;
+      font-size: 22px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .task-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0;
+    }
+
+    .tag {
+      background: #404040;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      color: #ccc;
+    }
+
+    .task-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin: 10px 0;
+    }
+
+    .deadline {
+      background: #750000;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 15px;
+    }
+
+    .claim-btn {
+      background: #b00000;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      width: 100%;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .claim-btn:hover {
+      background: #cc0000;
+    }
+
+    /* Prevent background scroll when modal is open */
+    body.modal-open {
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+
+<div class="tasks-grid" id="tasks-container">
+  <!-- JS will populate tasks here -->
+</div>
+
+<script>
+  const tasks = [
+    {
+      id: "1",
+      title: "Help with Math Homework",
+      description: "I need assistance with algebra equations.",
+      nickname: "Juan",
+      email: "juan@example.com",
+      tags: ["Math", "Algebra", "Urgent"],
+      image_url: "https://placekitten.com/400/200",
+      deadline: "July 25, 2025"
+    },
+    {
+      id: "2",
+      title: "Fix my PC",
+      description: "My laptop keeps restarting randomly.",
+      nickname: "Maria",
+      email: "maria@example.com",
+      tags: ["Tech", "Laptop"],
+      image_url: "",
+      deadline: "July 28, 2025"
+    }
+  ];
+
+  function renderTasks(tasks) {
+    const container = document.getElementById("tasks-container");
+    container.innerHTML = "";
+
+    tasks.forEach(task => {
+      const card = document.createElement("div");
+      card.className = "task-card";
+      card.innerHTML = `
+        <div class="task-header">
+          <div class="task-avatar">👤</div>
+          <div class="task-info">
+            <h3>${task.title}</h3>
+            <div class="task-author">
+              Posted by: <strong>${task.nickname}</strong><br/>
+              <small>${task.email}</small>
+            </div>
+          </div>
+        </div>
+        <div class="task-description">${task.description}</div>
+      `;
+
+      card.addEventListener("click", () => openModal(task));
+      container.appendChild(card);
+    });
+  }
+
+  function openModal(task) {
+    document.body.classList.add("modal-open");
+
+    const modal = document.createElement("div");
+    modal.className = "modal-overlay";
+    modal.innerHTML = `
+      <div class="modal-content">
+        <button class="close-btn" title="Close">&times;</button>
+        <h2>${task.title}</h2>
+        <p><strong>Posted by:</strong> ${task.nickname} (${task.email})</p>
+        <p>${task.description}</p>
+        ${task.image_url ? `<img src="${task.image_url}" class="task-image" />` : ""}
+        <div class="task-tags">
+          ${task.tags.map(tag => `<span class="tag">${tag}</span>`).join("")}
+        </div>
+        <div class="deadline">Deadline: ${task.deadline}</div>
+        <button class="claim-btn">Claim</button>
+      </div>
+    `;
+
+    modal.querySelector(".close-btn").addEventListener("click", () => {
+      document.body.classList.remove("modal-open");
+      modal.remove();
+    });
+
+    document.body.appendChild(modal);
+  }
+
+  renderTasks(tasks);
+</script>
+
+</body>
+</html>

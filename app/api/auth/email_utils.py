@@ -11,9 +11,10 @@ conf = ConnectionConfig(
     MAIL_FROM=os.getenv("MAIL_FROM"),
     MAIL_PORT=int(os.getenv("MAIL_PORT")),
     MAIL_SERVER=os.getenv("MAIL_SERVER"),
-    MAIL_STARTTLS=os.getenv("MAIL_STARTTLS") == "True",
-    MAIL_SSL_TLS=os.getenv("MAIL_SSL_TLS") == "True",
-    USE_CREDENTIALS=True
+    MAIL_STARTTLS=os.getenv("MAIL_STARTTLS") == "True",  # ✅ use MAIL_STARTTLS instead of MAIL_TLS
+    MAIL_SSL_TLS=os.getenv("MAIL_SSL_TLS") == "True",    # ✅ use MAIL_SSL_TLS instead of MAIL_SSL
+    USE_CREDENTIALS=True,
+    VALIDATE_CERTS=True
 )
 
 async def send_otp_email(email: EmailStr, otp: str):

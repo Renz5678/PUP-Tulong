@@ -23,12 +23,13 @@ async def get_tasks():
                 "id": item.get("id"),
                 "title": item.get("title"),
                 "author": item.get("author", "Anonymous"),
-                "nickname": item.get("nickname", ""),   # 👈 Added
-                "email": item.get("email", ""),         # 👈 Added
+                "nickname": item.get("nickname", ""),
+                "email": item.get("email", ""),
                 "description": item.get("description", ""),
                 "topics": item.get("topics", []),
                 "tags": item.get("tags", []),
                 "deadline": item.get("deadline"),
+                "image_url": item.get("image_url", "")  # ✅ Add this line
             }
             for item in items
         ]
