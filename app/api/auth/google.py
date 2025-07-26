@@ -25,7 +25,7 @@ oauth.register(
 # ✅ Login Route
 @router.get("/auth/login/google", name="google_login")
 async def login_with_google(request: Request):
-    redirect_uri = "http://localhost:8000/auth/google/callback"  # force localhost instead of 127.0.0.1
+    redirect_uri = str(request.url_for("auth_google_callback"))
     print("🔁 Google Redirect URI:", redirect_uri)
     return await oauth.google.authorize_redirect(request, redirect_uri)
 

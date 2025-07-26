@@ -5,16 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PUP Tulong - Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="/static/css/dashboard.css"/>
+  <link rel="stylesheet" href="/static/css/dashboard.css" />
 </head>
 <body>
   <!-- Navigation -->
   <nav class="nav-container">
     <div class="nav-left">
-      <div class="nav-item active" data-tab="dashboard">✪ Dashboard</div>
-      <div class="nav-item" data-tab="tasks">Task Manager</div>
-      <div class="nav-item" data-tab="requests">Personal Requests</div>
-      <div class="nav-item" data-tab="ratings">Your Ratings</div>
+      <div class="nav-item active" data-tab="dashboard" id="dashboard-tab">✪ Dashboard</div>
+      <div class="nav-item" data-tab="tasks" id="tasks-tab"><a href="/tasks">Task Manager</a></div>
+      <div class="nav-item" data-tab="requests" id="requests-tab"><a href="/requests">Personal Requests</a></div>
+      <div class="nav-item" data-tab="ratings" id="ratings-tab"><a href="/ratings">Your Ratings</a></div>
     </div>
     <div class="nav-right">
       <button class="notification-icon" id="notif-btn">🔔</button>
@@ -27,18 +27,71 @@
 
   <!-- Main Content -->
   <main class="main-container">
-    <section class="tasks-grid" id="tasks-container">
-      <!-- Tasks dynamically injected here -->
+    <section class="tasks-grid" id="tasks-container"></section>
+
+    <section id="task-manager-page" style="display: none; padding: 2rem;">
+      <h2 class="section-title">Pending Tasks</h2>
+      <div class="task-item" onclick="showTaskDetail('task1', this)">
+        <span class="task-text">bantay kay mingming</span>
+        <svg class="task-arrow" viewBox="0 0 100 100" fill="currentColor">
+          <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="10" fill="none"/>
+          <path d="M65 25 L35 50 L65 75" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
     </section>
   </main>
 
-  <!-- External JavaScript -->
-<div id="task-modal" class="modal hidden">
-  <div class="modal-content" id="modal-body">
-    <span class="close" id="modal-close">&times;</span>
-    <!-- Modal content will be injected here -->
+  <!-- Task Preview Modal -->
+  <div id="task-modal" class="modal hidden">
+    <div class="modal-content" id="modal-body">
+      <span class="close" id="modal-close">&times;</span>
+    </div>
   </div>
-</div>
+
+  <!-- Floating Add Button -->
+  <button id="open-task-form" class="floating-button" title="New Task">+</button>
+
+  <!-- Task Form Modal -->
+  <div id="task-form-modal" class="task-form-overlay">
+    <div class="task-form-modal">
+      <span id="close-task-form" class="task-form-close">&times;</span>
+      <h1>TASK REQUEST</h1>
+      <hr>
+
+<form id="taskRequestForm" enctype="multipart/form-data" method="post">
+  <div>
+    <input type="text" name="title" class="form-input" required placeholder="Request Name*" />
+  </div>
+  <div>
+    <input name="description" required placeholder="Description*" class="form-input" />
+  </div>
+  <div>
+    <select name="mode" required class="form-input"> <!-- ✅ changed from "modality" to "mode" -->
+      <option value="" disabled selected>Modality*</option>
+      <option value="onsite">Onsite</option>
+      <option value="online">Online</option>
+    </select>
+  </div>
+  <div>
+    <input type="datetime-local" name="deadline" required placeholder="Deadline*" class="form-input" />
+  </div>
+  <div>
+    <input type="text" name="price" placeholder="e.g. 200 or Negotiable" class="form-input" /> <!-- ✅ changed from "payment" to "price" -->
+  </div>
+  <div>
+    <input type="text" name="tags" placeholder="Tags (comma-separated)" class="form-input" />
+  </div>
+  <div class="buttons-container">
+    <div>
+      <label for="task-image">📷 Insert Photo</label>
+      <input type="file" id="task-image" name="image" accept="image/*" class="form-input" />
+    </div>
+    <button type="submit" class="submit-task-btn">📲 Post</button>
+  </div>
+</form>
+    </div>
+  </div>
+
   <script src="/static/js/dashboard.js"></script>
 </body>
 </html>

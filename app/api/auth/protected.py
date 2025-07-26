@@ -6,19 +6,25 @@ from .utils import decode_jwt
 protected = APIRouter()
 
 # ✅ This function can now be reused with Depends()
-def get_current_user(request: Request):
+async def get_current_user(request: Request):
     token = request.cookies.get("token")
+    print("🍪 Raw token:", token)
+
     if not token:
+        print("❌ No token found in cookies")
         raise HTTPException(status_code=401, detail="No token found")
 
     try:
         payload = decode_jwt(token)
+        print("✅ Decoded token payload:", payload)
         return {
             "sub": payload["sub"],
             "nickname": payload.get("nickname", "")
         }
-    except Exception:
+    except Exception as e:
+        print("❌ Failed to decode token:", e)
         raise HTTPException(status_code=401, detail="Invalid token")
+
 
 
 # ✅ Still exposed as an endpoint

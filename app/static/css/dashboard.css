@@ -13,6 +13,23 @@ body {
     padding: 20px;
 }
 
+a {
+  text-decoration: none; /* removes underline */
+  color: inherit;        /* inherits text color from parent */
+  background: none;
+  border: none;
+  outline: none;
+}
+
+a:visited,
+a:hover,
+a:focus,
+a:active {
+  text-decoration: none;
+  color: inherit;
+  outline: none;
+}
+
 /* Navigation Bar */
 .nav-container {
     background: #252525;
@@ -334,6 +351,174 @@ body {
   padding: 5px 10px;
   margin: 2px;
   font-size: 14px;
+}
+
+/* Floating Add Button */
+.floating-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #6d090b;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 32px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+}
+
+/* Task Form Modal Background Overlay */
+.task-form-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: none; /* hidden by default */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.task-form-overlay.show {
+  display: flex;
+}
+
+/* Modal Container */
+.task-form-modal {
+  font-family: 'Inter', sans-serif;
+  background: #6D090B;
+  color: #FFFFFF;
+  padding: 1rem;
+  border-radius: 20px;
+  width: 90%;
+  max-height: 100vh;
+  max-width: 500px;
+  position: relative;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+}
+
+/* Close Button (X) */
+.task-form-close {
+  position: absolute;
+  top: 3px;
+  right: 20px;
+  font-size: 48px;
+  cursor: pointer;
+}
+
+/* Form Labels and Inputs */
+.task-form-modal label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.task-form-modal input,
+.task-form-modal textarea,
+select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  font-size: 1.3rem;
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+}
+
+.task-form-modal textarea {
+  resize: vertical;
+}
+
+.form-input {
+  font-weight: 700;
+  width: 100%;
+  padding: 12px 24px 16px 16px !important;
+  margin-bottom: 1rem;
+  border-radius: 25px;
+  border: 1px solid #ccc;        /* Light gray border */
+  font-size: 1.3rem;
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+  background: white;
+  color: #6D090B;
+  outline: none;                 /* Prevent black outline */
+  transition: border 0.3s ease;
+  text-align: none;
+}
+
+
+/* Style on focus to prevent default black outline */
+.form-input:focus {
+  border: 1px solid #6D090B;     /* Optional: match theme color on focus */
+  outline: none;
+}
+
+/* Placeholder styling */
+.form-input::placeholder {
+  color: #6D090B;
+  opacity: 1; /* Ensure visibility in some browsers */
+}
+
+.buttons-container {
+  display: flex;
+  align-items: flex-end; /* aligns button with bottom of input */
+  gap: 1rem;             /* space between file input and button */
+  flex-wrap: wrap;       /* allows responsiveness on smaller screens */
+}
+
+.buttons-container > div {
+  flex: 1;               /* allows input to grow */
+  color: #FFFFFF;
+}
+
+.submit-task-btn {
+ white-space: nowrap;   /* prevent button text from wrapping */
+  height: 48px;   
+  background-color: #FFFFFF;
+  width: 10rem;
+  border-radius: 2rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+label[for="task-image"] {
+  display: inline-block;
+  padding: 10px 20px;
+  color: #ffffff;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+.submit-task-btn:hover {
+  background-color: #8c0a0d;
+}
+
+hr {
+  margin: 0.5rem 0 1.5rem 0;
+  border: none;
+  height: 1px;
+  background-color: #FFFFFF;
+}
+
+input[type="file"].form-input {
+  display: none;
+  padding: 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  background: white;
+  color: #6D090B;
+  cursor: pointer;
 }
 
 /* Responsive Design */

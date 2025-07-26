@@ -7,6 +7,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.sessions import SessionMiddleware
 from dotenv import load_dotenv
 from app.routers import tasks
+from starlette.status import HTTP_404_NOT_FOUND
 import os
 
 # Routers
@@ -14,6 +15,7 @@ from app.api.auth.routes import router as auth_router
 from app.api.auth.google import router as google_router
 from app.api.auth.protected import protected
 from app.dashboard import router as dashboard_router
+from fastapi.responses import RedirectResponse
 
 # ✅ Load environment variables from .env
 load_dotenv()
@@ -38,6 +40,12 @@ app.add_middleware(
     session_cookie="session",  # Optional: name it
 )
 
+app.include_router(auth_router, prefix="/auth")
+app.include_router(tasks.router) 
+app.include_router(google_router)
+app.include_router(protected, prefix="/auth")
+app.include_router(dashboard_router, prefix="/dashboard")
+
 # ✅ Mount static files (CSS, JS)
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
@@ -61,16 +69,23 @@ def register(request: Request):
 def dashboard(request: Request):
     return templates.TemplateResponse("pages/dashboard.html", {"request": request})
 
+@app.get("/tasks", response_class=HTMLResponse)
+def show_tasks_page(request: Request):
+    return templates.TemplateResponse("pages/tasks.html", {"request": request})
+
+@app.get("/logout")
+def logout(request: Request):
+    request.session.clear()  # Clear all session data
+    response = RedirectResponse(url="/login", status_code=302)
+    response.delete_cookie("session")  # Optional: make sure session cookie is gone
+    return response
 # ✅ Include routers
-app.include_router(auth_router, prefix="/auth")
-app.include_router(tasks.router) 
-app.include_router(google_router)
-app.include_router(protected)
-app.include_router(dashboard_router, prefix="/dashboard")
+
 
 # ✅ Custom 404 fallback
-@app.exception_handler(StarletteHTTPException)
-async def not_found_handler(request: Request, exc: StarletteHTTPException):
-    if exc.status_code == 404:
-        return templates.TemplateResponse("login.html", {"request": request})
-    return HTMLResponse(content=str(exc.detail), status_code=exc.status_code)
+# @app.exception_handler(StarletteHTTPException)
+# async def not_found_handler(request: Request, exc: StarletteHTTPException):
+#     print(f"❌ 404 Not Found: {request.url.path}")
+#     if exc.status_code == HTTP_404_NOT_FOUND:
+#         return templates.TemplateResponse("login.html", {"request": request})
+#     return HTMLResponse(content=str(exc.detail), status_code=exc.status_code)

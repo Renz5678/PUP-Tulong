@@ -1,38 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PUP Tulong - Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="/static/css/dashboard.css"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Manager - Task Viewer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/task.css">
+  <script src="/static/js/tasks.js" defer></script>
 </head>
 <body>
-  <!-- Navigation -->
   <nav class="nav-container">
     <div class="nav-left">
-      <div class="nav-item active" data-tab="dashboard">✪ Dashboard</div>
-      <div class="nav-item" data-tab="tasks">Task Manager</div>
-      <div class="nav-item" data-tab="requests">Personal Requests</div>
-      <div class="nav-item" data-tab="ratings">Your Ratings</div>
+      <div class="nav-item"><a href="/dashboard">✪ Dashboard</a></div>
+      <div class="nav-item active"><a href="/tasks">Task Manager</a></div>
+      <div class="nav-item"><a href="/requests">Personal Requests</a></div>
+      <div class="nav-item"><a href="/ratings">Your Ratings</a></div>
     </div>
     <div class="nav-right">
-      <button class="notification-icon" id="notif-btn">🔔</button>
-      <div class="profile-section" id="profile-btn">
+      <div class="notification-icon">🔔</div>
+      <div class="profile-section">
         <div class="profile-avatar"></div>
         <span>Profile</span>
       </div>
     </div>
   </nav>
 
-  <!-- Main Content -->
-  <!-- <main class="main-container">
-    <section class="tasks-grid" id="tasks-container">
-      <!-- Tasks dynamically injected here -->
-    </section>
-  </main> -->
+  <main class="main-container">
+    <!-- Pending Tasks Section -->
+    <div class="pending-tasks-section">
+      <h2 class="section-title">Pending Tasks</h2>
+      <div class="section-line"></div>
+      <div id="taskList"></div> <!-- Injected dynamically -->
+    </div>
 
-  <!-- External JS -->
-  <script src="/static/js/dashboard.js"></script>
+    <!-- Task Detail Modal -->
+    <div class="task-detail-modal" id="taskDetailModal">
+      <button class="close-btn" onclick="closeTaskDetail()">×</button>
+
+      <div class="task-header">
+        <div class="user-section">
+          <div class="user-avatar">👤</div>
+          <div class="user-info">
+            <div class="username" id="taskUsername">Loading...</div>
+            <div class="user-status">Anonymous</div>
+          </div>
+        </div>
+        <div class="task-meta-info">
+          <div class="meta-item"><span class="meta-label">Deadline:</span> <span id="taskDeadlineText">Loading...</span></div>
+          <div class="meta-item"><span class="meta-label" id="modalityLabel">Modality:</span> <span id="taskModalityText">Loading...</span></div>
+          <div class="meta-item"><span class="meta-label">Payment:</span> <span id="taskPaymentText">Loading...</span></div>
+        </div>
+      </div>
+
+      <div class="task-content">
+        <div class="task-text-content">
+          <h2 class="task-title" id="taskTitle">Loading...</h2>
+          <p class="task-description" id="taskDescription">Loading description...</p>
+        </div>
+
+        <img src="" alt="Task image" class="task-image" id="taskImage">
+
+        <button class="cancel-btn" onclick="cancelClaimedTask()">Cancel Claimed Task</button>
+      </div>
+    </div>
+  </main>
 </body>
 </html>

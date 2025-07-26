@@ -11,15 +11,18 @@ logger = logging.getLogger(__name__)
 # Lazy init for DynamoDB table
 def get_table():
     try:
-        dynamodb = boto3.resource("dynamodb", region_name="ap-northeast-1")  # ← adjust your region
+        dynamodb = boto3.resource("dynamodb", region_name="ap-northeast-1")
         table = dynamodb.Table("umsgc_helprequests")
         return table
     except Exception as e:
         logger.error(f"❌ Error connecting to DynamoDB: {e}")
         raise
 
-def create_request(email: str, nickname: str, title: str, description: str, tags: list, deadline: str, image_url: str):
+def create_request(email: str, nickname: str, title: str, description: str,
+                   tags: list, deadline: str, image_url: str, price: float,
+                   mode: str):
     request_id = str(uuid.uuid4())
+
     item = {
         "id": request_id,
         "email": email,
@@ -28,9 +31,12 @@ def create_request(email: str, nickname: str, title: str, description: str, tags
         "description": description,
         "tags": tags,
         "deadline": deadline,
-        "image_url": image_url,  # ✅ Added this line
+        "image_url": image_url,
+        "price": price,
+        "mode": mode,
         "created_at": datetime.utcnow().isoformat(),
     }
+
     try:
         get_table().put_item(Item=item)
         return item
@@ -83,3 +89,14 @@ def accept_request(request_id: str, user_email: str):
     except Exception as e:
         logger.error(f"❌ Failed to accept request: {e}")
         return {"error": str(e)}
+
+def get_claimed_tasks(user_email: str):
+    try:
+        response = get_table().scan(
+            FilterExpression="accepted_by = :email",
+            ExpressionAttributeValues={":email": user_email}
+        )
+        return response.get("Items", [])
+    except Exception as e:
+        logger.error(f"❌ Failed to fetch claimed tasks: {e}")
+        return []

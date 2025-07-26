@@ -21,14 +21,15 @@ if (loginForm) {
     `;
     
     try {
-      const res = await fetch("/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: document.getElementById("login-email").value,
-          password: document.getElementById("login-password").value
-        })
-      });
+const res = await fetch("/auth/login", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  credentials: "include", // ✅ this makes the browser store the token cookie
+  body: JSON.stringify({
+    email: document.getElementById("login-email").value,
+    password: document.getElementById("login-password").value
+  })
+});
 
       const data = await res.json();
       showMessage(data.message || data.detail, res.ok ? 'success' : 'error');
