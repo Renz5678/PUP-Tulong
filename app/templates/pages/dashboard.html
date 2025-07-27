@@ -5,22 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PUP Tulong - Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="/static/css/dashboard.css" />
+  <link rel="stylesheet" href="static/css/dashboard.css" />
 </head>
 <body>
   <!-- Navigation -->
   <nav class="nav-container">
     <div class="nav-left">
-      <div class="nav-item active" data-tab="dashboard" id="dashboard-tab">✪ Dashboard</div>
-      <div class="nav-item" data-tab="tasks" id="tasks-tab"><a href="/tasks">Task Manager</a></div>
-      <div class="nav-item" data-tab="requests" id="requests-tab"><a href="/requests">Personal Requests</a></div>
-      <div class="nav-item" data-tab="ratings" id="ratings-tab"><a href="/ratings">Your Ratings</a></div>
+      <div class="nav-item active"><a href="/dashboard">✪ Dashboard</a></div>
+      <div class="nav-item"><a href="/tasks">Task Manager</a></div>
+      <div class="nav-item"><a href="/requests">Personal Requests</a></div>
+      <div class="nav-item"><a href="/ratings">Your Ratings</a></div>
     </div>
     <div class="nav-right">
       <button class="notification-icon" id="notif-btn">🔔</button>
-      <div class="profile-section" id="profile-btn">
+      <button id="profile-btn" class="profile-section">
         <div class="profile-avatar"></div>
         <span>Profile</span>
+      </button>
       </div>
     </div>
   </nav>
@@ -58,40 +59,61 @@
       <h1>TASK REQUEST</h1>
       <hr>
 
-<form id="taskRequestForm" enctype="multipart/form-data" method="post">
-  <div>
-    <input type="text" name="title" class="form-input" required placeholder="Request Name*" />
-  </div>
-  <div>
-    <input name="description" required placeholder="Description*" class="form-input" />
-  </div>
-  <div>
-    <select name="mode" required class="form-input"> <!-- ✅ changed from "modality" to "mode" -->
-      <option value="" disabled selected>Modality*</option>
-      <option value="onsite">Onsite</option>
-      <option value="online">Online</option>
-    </select>
-  </div>
-  <div>
-    <input type="datetime-local" name="deadline" required placeholder="Deadline*" class="form-input" />
-  </div>
-  <div>
-    <input type="text" name="price" placeholder="e.g. 200 or Negotiable" class="form-input" /> <!-- ✅ changed from "payment" to "price" -->
-  </div>
-  <div>
-    <input type="text" name="tags" placeholder="Tags (comma-separated)" class="form-input" />
-  </div>
-  <div class="buttons-container">
+  <form id="taskRequestForm" enctype="multipart/form-data" method="post">
     <div>
-      <label for="task-image">📷 Insert Photo</label>
-      <input type="file" id="task-image" name="image" accept="image/*" class="form-input" />
+      <input type="text" name="title" class="form-input" required placeholder="Request Name*" />
     </div>
-    <button type="submit" class="submit-task-btn">📲 Post</button>
-  </div>
-</form>
+    <div>
+      <input name="description" required placeholder="Description*" class="form-input" />
+    </div>
+    <div>
+      <select name="mode" required class="form-input" id="mode-select">
+        <option value="" disabled selected>Modality*</option>
+        <option value="onsite">Onsite</option>
+        <option value="online">Online</option>
+      </select>
+    </div>
+
+    <!-- Location field appears only if "onsite" is selected -->
+    <div id="location-wrapper" style="display: none;">
+      <input type="text" name="location" placeholder="Location*" class="form-input" />
+    </div>
+
+    <div>
+      <input type="datetime-local" name="deadline" required placeholder="Deadline*" class="form-input" />
+    </div>
+    <div>
+      <input type="text" name="price" placeholder="e.g. 200 or Negotiable" class="form-input" />
+    </div>
+    <div>
+      <input type="text" name="tags" placeholder="Tags (comma-separated)" class="form-input" />
+    </div>
+    <div class="buttons-container">
+      <div>
+        <label for="task-image">📷 Insert Photo</label>
+        <input type="file" id="task-image" name="image" accept="image/*" class="form-input" />
+      </div>
+      <button type="submit" class="submit-task-btn">📲 Post</button>
+    </div>
+  </form>
     </div>
   </div>
 
-  <script src="/static/js/dashboard.js"></script>
+  <div id="profile-modal" class="modal hidden">
+    <div class="modal-content">
+      <span id="profile-close" class="close">&times;</span>
+        <h2>👤 Your Profile</h2>
+        <hr />
+        <div style="margin-top: 1rem;">
+          <p><strong>Nickname:</strong> <span id="profile-nickname">Loading...</span></p>
+          <br>
+          <p><strong>Email:</strong> <span id="profile-email">Loading...</span></p>
+          <br>
+          <p><strong>Tasks Completed:</strong> <span id="profile-completed">0</span></p>
+        </div>
+            <button id="logout-btn" class="logout-btn">🚪 Logout</button>
+    </div>
+  </div>
+  <script src="static/js/dashboard.js"></script>
 </body>
 </html>

@@ -3,6 +3,7 @@ from datetime import datetime
 import boto3
 from boto3.dynamodb.conditions import Key
 import logging
+from typing import Optional
 
 # Setup logging for visibility
 logging.basicConfig(level=logging.INFO)
@@ -19,8 +20,8 @@ def get_table():
         raise
 
 def create_request(email: str, nickname: str, title: str, description: str,
-                   tags: list, deadline: str, image_url: str, price: float,
-                   mode: str):
+                   tags: list, deadline: str, image_url: Optional[str],
+                   price: float, mode: str, location: Optional[str] = None):
     request_id = str(uuid.uuid4())
 
     item = {
@@ -31,11 +32,19 @@ def create_request(email: str, nickname: str, title: str, description: str,
         "description": description,
         "tags": tags,
         "deadline": deadline,
-        "image_url": image_url,
         "price": price,
         "mode": mode,
         "created_at": datetime.utcnow().isoformat(),
+        "completion_status": "pending", 
     }
+
+    # Include image_url only if present
+    if image_url:
+        item["image_url"] = image_url
+
+    # Include location only if it's onsite and provided
+    if mode == "onsite" and location:
+        item["location"] = location
 
     try:
         get_table().put_item(Item=item)
@@ -100,3 +109,10 @@ def get_claimed_tasks(user_email: str):
     except Exception as e:
         logger.error(f"❌ Failed to fetch claimed tasks: {e}")
         return []
+
+def get_user_requests(email: str):
+    table = get_table()
+    response = table.scan()
+    items = response.get("Items", [])
+    
+    return [item for item in items if item.get("email") == email]

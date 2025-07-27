@@ -10,6 +10,7 @@ from app.api.auth.protected import get_current_user
 from app.api.task import dynamodb_requests
 from app.api.task.dynamodb_requests import get_table
 from decimal import Decimal
+from typing import Optional
 
 router = APIRouter(tags=["Dashboard"])
 templates = Jinja2Templates(directory="app/templates")
@@ -42,19 +43,24 @@ async def get_single_request(request_id: str):
 async def create_new_request(
     title: str = Form(...),
     description: str = Form(...),
-    tags: str = Form(...),  # comma-separated
+    tags: str = Form(...),
     deadline: str = Form(...),
     price: Decimal = Form(...),
-    mode: str = Form(...),  # online or onsite
-    image: UploadFile = File(...),
+    mode: str = Form(...),
+    location: str = Form(None),
+    image: Optional[UploadFile] = File(None),  # ✅ make it optional
     user=Depends(get_current_user)
 ):
-    ext = image.filename.split(".")[-1]
-    image_filename = f"{uuid.uuid4()}.{ext}"
-    image_path = os.path.join(UPLOAD_DIR, image_filename)
+    image_url = None
 
-    with open(image_path, "wb") as f:
-        f.write(await image.read())
+    # Only save if an image was uploaded
+    if image:
+        ext = image.filename.split(".")[-1]
+        image_filename = f"{uuid.uuid4()}.{ext}"
+        image_path = os.path.join(UPLOAD_DIR, image_filename)
+        with open(image_path, "wb") as f:
+            f.write(await image.read())
+        image_url = f"/static/uploads/{image_filename}"
 
     tag_list = [tag.strip() for tag in tags.split(",") if tag.strip()]
 
@@ -65,11 +71,11 @@ async def create_new_request(
         description=description,
         tags=tag_list,
         deadline=deadline,
-        image_url=f"/static/uploads/{image_filename}",
+        image_url=image_url,  # Can be None
         price=price,
-        mode=mode
+        mode=mode,
+        location=location
     )
-
 
 @router.delete("/request/{request_id}")
 async def delete_request(request_id: str, user=Depends(get_current_user)):
@@ -133,10 +139,49 @@ async def get_unclaimed_tasks(user=Depends(get_current_user)):
     print(f"✅ Returning {len(unclaimed)} unclaimed tasks.")
     return unclaimed
 
+@router.put("/request/{request_id}/mark_completed")
+async def mark_task_completed(request_id: str, user=Depends(get_current_user)):
+    task = dynamodb_requests.get_request_by_id(request_id)
+
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found.")
+
+    if task.get("accepted_by") != user["sub"]:
+        raise HTTPException(status_code=403, detail="You are not the claimer of this task.")
+
+    # Mark as waiting for sender's confirmation
+    get_table().update_item(
+        Key={"id": request_id},
+        UpdateExpression="SET completion_status = :status",
+        ExpressionAttributeValues={":status": "waiting_confirmation"}
+    )
+
+    return {"success": True, "message": "Task marked as completed. Waiting for sender to confirm."}
+
+@router.put("/request/{request_id}/confirm_completion")
+async def confirm_completion(request_id: str, decision: str = Form(...), user=Depends(get_current_user)):
+    task = dynamodb_requests.get_request_by_id(request_id)
+
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found.")
+
+    if task.get("email") != user["sub"]:
+        raise HTTPException(status_code=403, detail="You are not the original requester of this task.")
+
+    if task.get("completion_status") != "waiting_confirmation":
+        raise HTTPException(status_code=400, detail="Task is not awaiting confirmation.")
+
+    if decision not in ["accepted", "rejected"]:
+        raise HTTPException(status_code=400, detail="Invalid decision value. Use 'accepted' or 'rejected'.")
+
+    get_table().update_item(
+        Key={"id": request_id},
+        UpdateExpression="SET completion_status = :status",
+        ExpressionAttributeValues={":status": decision}
+    )
+
+    return {"success": True, "message": f"Completion {decision}."}
+
 @router.get("/my_requests")
 async def get_my_requests(user=Depends(get_current_user)):
-    all_requests = dynamodb_requests.get_all_requests()
-    my_requests = [
-        req for req in all_requests if req.get("email") == user["sub"]
-    ]
-    return my_requests
+    return dynamodb_requests.get_user_requests(user["sub"])

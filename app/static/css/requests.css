@@ -14,8 +14,8 @@ body {
 }
 
 a {
-  text-decoration: none; /* removes underline */
-  color: inherit;        /* inherits text color from parent */
+  text-decoration: none;
+  color: inherit;
   background: none;
   border: none;
   outline: none;
@@ -119,155 +119,108 @@ a:active {
 .main-container {
     max-width: 1200px;
     margin: 0 auto;
+    display: flex;
+    gap: 30px;
+    background-color: #6D090B;
+    height: 75vh;
+    border-radius: 25px;
 }
 
-.tasks-grid {
-    columns: 3;
-    column-gap: 20px;
-    column-fill: balance;
+.main-container h2 {
+    color: #FFFFFF;
+    font-weight: 650;
+    font-size: 1.5rem;
 }
 
-.task-card {
-    background: #252525;
-    border: 1px solid #404040;
-    border-radius: 15px;
+.tasks-section {
+    flex: 1;
     padding: 20px;
-    color: #ffffff;
-    display: inline-block;
+    overflow-y: auto;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.section-line {
     width: 100%;
+    height: 1px;
+    background: white;
     margin-bottom: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s, box-shadow 0.2s;
-    cursor: pointer;
-    break-inside: avoid;
-    page-break-inside: avoid;
+    margin-top: 15px;
+    border-radius: 1px;
 }
 
-.task-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
-
-.task-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    margin-bottom: 15px;
-}
-
-.task-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: #404040;
-    border: 1px solid #555555;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.task-info h3 {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 4px;
-}
-
-.task-author {
-    font-size: 12px;
-    color: #cccccc;
-}
-
-.task-description {
-    line-height: 1.5;
-    font-size: 16px;
-    margin-bottom: 15px;
-}
-
-.task-list {
-    margin: 15px 0;
-    padding-left: 20px;
-    color: #ffffff;
-}
-
-.task-list li {
-    margin-bottom: 5px;
-    line-height: 1.4;
-}
-
-.task-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 15px;
-}
-
-.tag {
-    background: #404040;
-    border: 1px solid #555555;
-    padding: 4px 12px;
-    border-radius: 12px;
-    font-size: 12px;
-    color: #cccccc;
-}
-
-.deadline {
-    background: #750000;
-    color: white;
-    padding: 8px 16px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 400;
+.taskview {
+    background-color: #6D090B;
+    flex: 3;
+    height: 75vh;
+    align-self: left;
     width: 100%;
-}
-
-.deadline-label {
-    font-weight: 600;
-}
-
-.task-images {
+    margin: auto;
+    padding: 20px;
+    margin-right: 2rem;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin: 15px 0;
 }
 
-.task-image {
-    background: #404040;
-    border: 1px solid #555555;
-    border-radius: 8px;
-    height: 120px;
-    background-size: cover;
-    background-position: center;
+.search-bar {
+    width: 100%;
+    background-color: #ffffff;
+    height: 3rem;
+    border-radius: 20px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    margin-bottom: 1rem;
 }
 
-.calculator-bg {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    position: relative;
-    overflow: hidden;
+img {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+.search-bar button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    margin: auto;
+}
+.search-box {
+    width: 94%;
+    height: 100%;
+    padding: 0 20px;
+    border: none;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    color: #6D090B;
+    outline: none;
 }
 
-.calculator-bg::after {
-    content: "📊";
-    position: absolute;
-    right: 10px;
-    bottom: 10px;
-    font-size: 24px;
+.search-box::placeholder {
+    color: #6D090B;
+    opacity: 0.3;
+    text-align: right;
+    font-weight: 700;
+    font-size: 14px;
 }
 
-.grade-bg {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    position: relative;
-    overflow: hidden;
+.task-details {
+    background-color: #5B0E10;
+    align-self: center;
+    width: 100%;
+    height: 80%;
+    margin-top: 1.5rem;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.grade-bg::after {
-    content: "📝";
-    position: absolute;
-    right: 10px;
-    bottom: 10px;
-    font-size: 24px;
+.caption {
+    text-align: center;
+    color: #FFFFFF;
 }
+/* Modals */
 .modal {
   position: fixed;
   top: 0;
@@ -284,19 +237,16 @@ a:active {
   transition: opacity 0.3s ease;
 }
 
-/* Show modal */
 .modal.show {
   display: flex;
   opacity: 1;
   pointer-events: all;
 }
 
-/* Hidden modal */
 .modal.hidden {
   display: none;
 }
 
-/* Modal content */
 .modal-content {
   background-color: #252525;
   padding: 40px;
@@ -312,13 +262,11 @@ a:active {
   transition: transform 0.4s ease, opacity 0.4s ease;
 }
 
-/* Animate content in */
 .modal.show .modal-content {
   opacity: 1;
   transform: translateY(0) scale(1);
 }
 
-/* Close button */
 .modal-content .close {
   position: absolute;
   right: 20px;
@@ -327,41 +275,18 @@ a:active {
   cursor: pointer;
 }
 
-/* Header styles */
 .modal-content h3 {
   margin-bottom: 15px;
   font-size: 28px;
-}
-
-/* Tag styling */
-.modal-content ul {
-  margin-top: 10px;
-  padding-left: 20px;
-}
-
-.task-tags {
-  margin-top: 10px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.tag {
-  background: #444;
-  border-radius: 6px;
-  padding: 5px 10px;
-  margin: 2px;
-  font-size: 14px;
 }
 
 /* Floating Add Button */
 .floating-button {
   position: fixed;
   bottom: 20px;
-  font-weight: 1000;
   right: 20px;
-  background-color: #FFB222;
-  color: #6d090b;
+  background-color: #6d090b;
+  color: white;
   border: none;
   border-radius: 50%;
   width: 60px;
@@ -380,17 +305,20 @@ a:active {
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  display: none; /* hidden by default */
+  display: none;
   justify-content: center;
   align-items: center;
   z-index: 1000;
+    transform: scale(0.95);
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .task-form-overlay.show {
-  display: flex;
+  display: flex !important;
+  opacity: 1;
+  transform: scale(1);
 }
 
-/* Modal Container */
 .task-form-modal {
   font-family: 'Inter', sans-serif;
   background: #6D090B;
@@ -404,21 +332,12 @@ a:active {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
 }
 
-/* Close Button (X) */
 .task-form-close {
   position: absolute;
   top: 3px;
   right: 20px;
   font-size: 48px;
   cursor: pointer;
-}
-
-/* Form Labels and Inputs */
-.task-form-modal label {
-  font-weight: 600;
-  display: block;
-  margin-bottom: 5px;
-  color: #333;
 }
 
 .task-form-modal input,
@@ -444,45 +363,41 @@ select {
   padding: 12px 24px 16px 16px !important;
   margin-bottom: 1rem;
   border-radius: 25px;
-  border: 1px solid #ccc;        /* Light gray border */
+  border: 1px solid #ccc;
   font-size: 1rem;
   font-family: 'Inter', sans-serif;
-  box-sizing: border-box;
   background: white;
   color: #6D090B;
-  outline: none;                 /* Prevent black outline */
+  outline: none;
   transition: border 0.3s ease;
   text-align: none;
 }
 
-
-/* Style on focus to prevent default black outline */
 .form-input:focus {
-  border: 1px solid #6D090B;     /* Optional: match theme color on focus */
+  border: 1px solid #6D090B;
   outline: none;
 }
 
-/* Placeholder styling */
 .form-input::placeholder {
   color: #6D090B;
-  opacity: 1; /* Ensure visibility in some browsers */
+  opacity: 1;
 }
 
 .buttons-container {
   display: flex;
-  align-items: flex-end; /* aligns button with bottom of input */
-  gap: 1rem;             /* space between file input and button */
-  flex-wrap: wrap;       /* allows responsiveness on smaller screens */
+  align-items: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .buttons-container > div {
-  flex: 1;               /* allows input to grow */
+  flex: 1;
   color: #FFFFFF;
 }
 
 .submit-task-btn {
- white-space: nowrap;   /* prevent button text from wrapping */
-  height: 48px;   
+  white-space: nowrap;
+  height: 48px;
   background-color: #FFFFFF;
   width: 10rem;
   border-radius: 2rem;
@@ -524,7 +439,52 @@ input[type="file"].form-input {
   cursor: pointer;
 }
 
-/* Add to dashboard.css */
+.task-item {
+    background: #FFB222;
+            border-radius: 20px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            color: #6D090B;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 500;
+        }
+
+        .task-item:hover {
+            background: #222222;
+            transform: translateY(-2px);
+            color: #FFFFFF;
+        }
+
+        .task-item.active {
+            background: #222222;
+            color: white;
+        }
+
+        .task-item.active:hover {
+            background: #333333;
+        }
+
+        .task-text {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .task-arrow {
+            width: 24px;
+            height: 24px;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.3s ease;
+        }
+
+        .task-item.active .task-arrow {
+            opacity: 1;
+            transform: scale(1);
+        }
 
 .modal-content {
   height: 60vh;
@@ -579,22 +539,11 @@ input[type="file"].form-input {
 }
 
 /* Responsive Design */
-@media (max-width: 1024px) {
-    .tasks-grid {
-        columns: 2;
-        column-gap: 15px;
-    }
-}
-
 @media (max-width: 768px) {
     .nav-container {
         flex-direction: column;
         gap: 15px;
         padding: 15px;
-    }
-
-    .tasks-grid {
-        columns: 1;
     }
 
     body {
@@ -607,8 +556,22 @@ input[type="file"].form-input {
         padding: 6px 12px;
         font-size: 14px;
     }
-
-    .task-card {
-        padding: 15px;
-    }
 }
+
+.floating-button {
+  position: fixed;
+  bottom: 20px;
+  font-weight: 1000;
+  right: 20px;
+  background-color: #FFB222;
+  color: #6d090b;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 32px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+}
+

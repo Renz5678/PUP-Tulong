@@ -73,6 +73,14 @@ def dashboard(request: Request):
 def show_tasks_page(request: Request):
     return templates.TemplateResponse("pages/tasks.html", {"request": request})
 
+@app.get("/requests", response_class=HTMLResponse)
+def show_requests_page(request: Request):
+    return templates.TemplateResponse("pages/requests.html", {"request": request})
+
+@app.get("/ratings", response_class=HTMLResponse)
+def show_ratings_page(request: Request):
+    return templates.TemplateResponse("pages/ratings.html", {"request": request})
+
 @app.get("/logout")
 def logout(request: Request):
     request.session.clear()  # Clear all session data

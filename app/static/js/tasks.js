@@ -1,6 +1,51 @@
 let claimedTasks = {};
 
 document.addEventListener("DOMContentLoaded", () => {
+
+    profileBtn?.addEventListener("click", async () => {
+    const modal = document.getElementById("profile-modal");
+    modal.classList.remove("hidden");
+    modal.classList.add("show");
+
+    try {
+      const [profileRes, tasksRes] = await Promise.all([
+        fetch("/dashboard/profile"),
+        fetch("/dashboard/my_requests")
+      ]);
+
+      const profileData = await profileRes.json();
+      const myTasks = await tasksRes.json();
+
+      const completedTasks = Array.isArray(myTasks)
+        ? myTasks.filter(task => task.completion_status === "completed")
+        : [];
+
+      document.getElementById("profile-nickname").textContent = profileData.nickname || "N/A";
+      document.getElementById("profile-email").textContent = profileData.email || "N/A";
+      document.getElementById("profile-completed").textContent = completedTasks.length;
+    } catch (err) {
+      console.error("❌ Failed to load profile info:", err);
+      alert("⚠️ Failed to load your profile.");
+    }
+  });
+
+  document.getElementById("logout-btn").addEventListener("click", async () => {
+    try {
+      const res = await fetch("/logout", {
+        method: "GET",
+        credentials: "include"
+      });
+
+      if (res.ok) {
+        window.location.href = "/login";
+      } else {
+        alert("❌ Failed to logout. Please try again.");
+      }
+    } catch (err) {
+      console.error("Logout error:", err);
+      alert("⚠️ Network error while logging out.");
+    }
+  });
     // Fetch claimed tasks from backend
     fetch('/dashboard/claimed_tasks')
         .then(res => res.json())
