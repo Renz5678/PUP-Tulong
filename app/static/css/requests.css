@@ -11,6 +11,7 @@ body {
     color: #333333;
     min-height: 100vh;
     padding: 20px;
+    overflow-y: hidden
 }
 
 a {
@@ -122,7 +123,7 @@ a:active {
     display: flex;
     gap: 30px;
     background-color: #6D090B;
-    height: 75vh;
+    height: 80vh;
     border-radius: 25px;
 }
 
@@ -156,7 +157,7 @@ a:active {
     align-self: left;
     width: 100%;
     margin: auto;
-    padding: 20px;
+    padding: 10px;
     margin-right: 2rem;
     display: flex;
     flex-direction: column;
@@ -170,7 +171,6 @@ a:active {
     align-items: center;
     justify-content: center;
     display: flex;
-    margin-bottom: 1rem;
 }
 
 img {
@@ -204,16 +204,125 @@ img {
     font-size: 14px;
 }
 
-.task-details {
+.task-container {
     background-color: #5B0E10;
     align-self: center;
     width: 100%;
-    height: 80%;
+    height: 90%;
     margin-top: 1.5rem;
     border-radius: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: row;
+}
+
+.task-container.hidden {
+  display: none;
+}
+
+
+.verticalline {
+  height: 93%;
+  width: 1px;
+  background-color: #ccc;
+}
+
+.task-details {
+  color: #FFFFFF;
+  flex: 3;
+  height: 100%;
+  position: relative;
+  padding: 1rem;
+}
+
+.task-sidebar {
+  flex: 1;
+  height: 100%;
+  padding: 15px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.task-description,
+.rules,
+.rate-helper {
+  background-color: #FFB222;
+}
+
+.task-description {
+  padding: 12px;
+  border-radius: 12px;
+  flex: 3;
+  text-align: right;
+  color: #6D090B;
+  font-size: 12px;
+}
+
+.rules {
+  padding: 8px;
+  border-radius: 12px;
+  flex: 10;
+  font-size: 11px;
+  font-weight: bold;
+  color: black;
+  font-family: poppins, sans-serif;
+}
+
+.rules ol {
+  padding-left: 20px;
+  font-weight: 100;
+}
+
+.rate-helper {
+    padding: 12px;
+    border-radius: 12px;
+    flex: 1;
+    background-color: #FFB222;
+    color: #6D090B;
+    font-weight: 700;
+      font-family: poppins, sans-serif;
+      line-height: 80%;
+      font-weight: 750;
+  font-size: 1.3rem;
+}
+
+.buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  padding: 1rem;
+  gap: 10px;
+  position: absolute;
+  bottom: 0;
+  right: 1px;
+}
+
+button {
+  all: unset;
+  cursor: pointer;
+  text-align: center;
+  font-weight: 200;
+}
+
+.cancel,
+.finish {
+  flex: 1;
+  border-radius: 20px;
+  height: 2.5rem;
+}
+
+.cancel {
+  background-color: #222222;
+  color:#FFB222;
+}
+
+.finish {
+  background-color: #FFB222;
+  color: #6D090B;
 }
 
 .caption {

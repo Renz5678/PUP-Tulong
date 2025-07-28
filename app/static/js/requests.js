@@ -1,8 +1,10 @@
 let requestedTasks = {};
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Hide task container initially
+  const taskContainer = document.getElementById("taskContainer");
+  taskContainer.classList.add("hidden");
 
-    
   // Modal controls for task request form
   const formModal = document.getElementById("task-form-overlay");
   const openFormBtn = document.getElementById("open-task-form");
@@ -10,7 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (openFormBtn && formModal) {
     openFormBtn.addEventListener("click", () => {
-      console.log("Open Task Form button clicked!");
       formModal.classList.add("show");
     });
   }
@@ -72,43 +73,41 @@ function createTaskListItem(taskId, task) {
   const taskList = document.getElementById("taskList");
   const item = document.createElement("div");
   item.className = "task-item";
-  item.innerHTML = `<div class="task-title">${task.title}</div>`;
+  item.innerHTML = `
+    <div class="task-title">${task.title}</div>
+    <div class="task-deadline">${task.deadline}</div>
+  `;
   item.addEventListener("click", () => {
     showTaskDetail(taskId);
+    document.querySelectorAll(".task-item").forEach(btn => btn.classList.remove("active"));
+    item.classList.add("active");
   });
   taskList.appendChild(item);
 }
 
-// Show details in modal when a request is clicked
+// Show details in the container when a request is clicked
 function showTaskDetail(taskId) {
   const data = requestedTasks[taskId];
   if (!data) return;
 
-  openTaskDetail({
-    username: data.nickname || "Anonymous",
-    deadline: data.deadline,
-    modality: data.mode,
-    payment: data.price || "Negotiable",
-    title: data.title,
-    description: data.description,
-    image: data.image_url || ""
-  });
-}
+  // Show task container
+  const taskContainer = document.getElementById("taskContainer");
+  taskContainer.classList.remove("hidden");
 
-// Open task detail modal
-function openTaskDetail(taskData) {
-  document.getElementById("taskUsername").innerText = taskData.username || "Anonymous";
-  document.getElementById("taskDeadlineText").innerText = taskData.deadline || "N/A";
-  document.getElementById("taskModalityText").innerText = taskData.modality || "N/A";
-  document.getElementById("taskPaymentText").innerText = taskData.payment || "N/A";
-  document.getElementById("taskTitle").innerText = taskData.title || "Untitled";
-  document.getElementById("taskDescription").innerText = taskData.description || "No description provided.";
-  document.getElementById("taskImage").src = taskData.image || "";
+  // Populate task details
+  document.getElementById("injectedTitle").innerText = data.title || "Untitled";
+  document.getElementById("injectedPoster").innerText = data.nickname || "Anonymous";
+  document.getElementById("injectedDescription").innerText = data.description || "No description provided.";
+  document.getElementById("injectedDeadline").innerText = data.deadline || "N/A";
+  document.getElementById("injectedModality").innerText = data.mode || "N/A";
+  document.getElementById("injectedPayment").innerText = data.price || "N/A";
 
-  document.getElementById("taskDetailModal").classList.add("active");
-}
-
-// Close task detail modal
-function closeTaskDetail() {
-  document.getElementById("taskDetailModal").classList.remove("active");
+  const imageElement = document.getElementById("taskImage");
+  if (data.image_url) {
+    imageElement.src = data.image_url;
+    imageElement.style.display = "block";
+  } else {
+    imageElement.src = "";
+    imageElement.style.display = "none";
+  }
 }

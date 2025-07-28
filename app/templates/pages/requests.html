@@ -7,46 +7,47 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="/static/css/requests.css" />
   <style>
+    .taskview {
+      position: relative;
+    }
+
     .task-detail-modal {
       display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: rgba(0, 0, 0, 0.6);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
+      position: absolute;
+      top: 80px;
+      right: 0;
+      width: 100%;
+      max-width: 600px;
+      background-color: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+      z-index: 10;
     }
 
     .task-detail-modal.active {
-      display: flex;
-    }
-
-    .task-detail-modal .task-header,
-    .task-detail-modal .task-content {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      max-width: 600px;
-      width: 100%;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      display: block;
     }
 
     .task-detail-modal .close-btn {
       position: absolute;
-      top: 20px;
-      right: 30px;
-      background: transparent;
+      top: 10px;
+      right: 14px;
       font-size: 24px;
+      background: none;
       border: none;
       cursor: pointer;
-      color: white;
+      color: #333;
+    }
+
+    .task-detail-modal .task-header,
+    .task-detail-modal .task-content {
+      margin-top: 1rem;
     }
 
     .task-detail-modal .task-image {
       width: 100%;
-      max-height: 300px;
+      max-height: 250px;
       object-fit: cover;
       margin-top: 1rem;
       border-radius: 8px;
@@ -73,15 +74,15 @@
 
   <!-- Main Content -->
   <main class="main-container">
-    <div class="tasks-section">
-      <h2 class="section-title">Ongoing Requests</h2>
-      <div class="section-line"></div>
-      <div id="taskList"></div>
+<div class="tasks-section">
+  <h2 class="section-title">Ongoing Requests</h2>
+  <div class="section-line"></div>
+  <div id="taskList"></div>
 
-      <h2 class="section-title">Completed Requests</h2>
-      <div class="section-line"></div>
-      <div id="completed_taskList"></div>
-    </div> 
+  <h2 class="section-title">Completed Requests</h2>
+  <div class="section-line"></div>
+  <div id="completed_taskList"></div>
+</div>
 
     <div class="taskview">
       <div class="search-bar">
@@ -89,8 +90,75 @@
         <button id="searchButton"><img src="Search_Magnifying_Glass.svg" alt=""></button>
       </div>
 
-      <div class="task-details" id="task-details">
-        <!-- Task details will be dynamically shown here -->
+      <div class="task-container hidden" id="taskContainer">
+        <div class="task-details">
+          Title: <span id="injectedTitle"></span><br>
+          Posted by: <span id="injectedPoster"></span><br>
+          <br>
+          <span id="injectedDescription">
+            Requests will appear here
+          </span>
+          <!-- optional image here -->
+          <div class="buttons">
+            <button class="cancel">Cancel Request</button>
+            <button class="finish">Finish Request</button>
+          </div>
+        </div>
+
+        <div class="verticalline"></div>
+
+        <div class="task-sidebar">
+          <div class="task-description">
+            Deadline: <span id="injectedDeadline"></span><br>
+            Modality: <span id="injectedModality"></span><br>
+            Payment: <span id="injectedPayment"></span>
+          </div>
+
+          <div class="rules">
+            Please be reminded that all posts must abide by the following rules:
+            <ol style="margin-left: 1.2rem;">
+              <li>Be clear and respectful</li>
+              <li>Offer incentives if possible</li>
+              <li>Respect onsite safety</li>
+              <li>Do not spam</li>
+              <li>Mark tasks as complete</li>
+              <li>Avoid inappropriate content</li>
+              <li>Respond promptly and honestly</li>
+              <li>Don’t use this platform for advertising or promotions</li>
+            </ol>
+            Violation may lead to account restriction, suspension, or deletion.
+            <br><br>Happy tasking!
+          </div>
+
+          <button class="rate-helper">Rate Helper</button>
+        </div>
+      </div>
+
+      <!-- Task Detail Modal -->
+      <div class="task-detail-modal" id="taskDetailModal">
+        <button class="close-btn" onclick="closeTaskDetail()">×</button>
+        <div class="task-header">
+          <div class="user-section">
+            <div class="user-avatar">👤</div>
+            <div class="user-info">
+              <div class="username" id="taskUsername">Loading...</div>
+              <div class="user-status">Anonymous</div>
+            </div>
+          </div>
+          <div class="task-meta-info">
+            <div class="meta-item"><span class="meta-label">Deadline:</span> <span id="taskDeadlineText">Loading...</span></div>
+            <div class="meta-item"><span class="meta-label">Modality:</span> <span id="taskModalityText">Loading...</span></div>
+            <div class="meta-item"><span class="meta-label">Payment:</span> <span id="taskPaymentText">Loading...</span></div>
+          </div>
+        </div>
+
+        <div class="task-content">
+          <div class="task-text-content">
+            <h2 class="task-title" id="taskTitle">Loading...</h2>
+            <p class="task-description" id="taskDescription">Loading description...</p>
+          </div>
+          <img src="" alt="Task image" class="task-image" id="taskImage">
+        </div>
       </div>
     </div>
   </main>
@@ -145,34 +213,6 @@
       <button id="logout-btn" class="logout-btn">🚪 Logout</button>
     </div>
   </div>
-
-  <!-- Task Detail Modal (Hidden by default) -->
-  <div class="task-detail-modal" id="taskDetailModal">
-    <button class="close-btn" onclick="closeTaskDetail()">×</button>
-    <div class="task-header">
-      <div class="user-section">
-        <div class="user-avatar">👤</div>
-        <div class="user-info">
-          <div class="username" id="taskUsername">Loading...</div>
-          <div class="user-status">Anonymous</div>
-        </div>
-      </div>
-      <div class="task-meta-info">
-        <div class="meta-item"><span class="meta-label">Deadline:</span> <span id="taskDeadlineText">Loading...</span></div>
-        <div class="meta-item"><span class="meta-label" id="modalityLabel">Modality:</span> <span id="taskModalityText">Loading...</span></div>
-        <div class="meta-item"><span class="meta-label">Payment:</span> <span id="taskPaymentText">Loading...</span></div>
-      </div>
-    </div>
-
-    <div class="task-content">
-      <div class="task-text-content">
-        <h2 class="task-title" id="taskTitle">Loading...</h2>
-        <p class="task-description" id="taskDescription">Loading description...</p>
-      </div>
-      <img src="" alt="Task image" class="task-image" id="taskImage">
-    </div>
-  </div>
-
-  <script src="/static/js/requests.js"></script>
+<script src="/static/js/requests.js"></script>
 </body>
 </html>
