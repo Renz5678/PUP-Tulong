@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PUP Tulong - Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/static/css/dashboard.css"/>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav-container">
+    <div class="nav-left">
+      <div class="nav-item"><a href="/dashboard">✪ Dashboard</a></div>
+      <div class="nav-item"><a href="/tasks">Task Manager</a></div>
+      <div class="nav-item"><a href="/requests">Personal Requests</a></div>
+      <div class="nav-item active"><a href="/ratings">Your Ratings</a></div>
+    </div>
+    <div class="nav-right">
+      <button class="notification-icon" id="notif-btn">🔔</button>
+      <div class="profile-section" id="profile-btn">
+        <div class="profile-avatar"></div>
+        <span>Profile</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <!-- <main class="main-container">
+    <section class="tasks-grid" id="tasks-container">
+      <!-- Tasks dynamically injected here -->
+    </section>
+  </main> 
+
+  <div id="profile-modal" class="modal hidden">
+  <div class="modal-content" id="profile-content">
+    <span class="close" id="profile-close">&times;</span>
+    <h2>User Profile</h2>
+    <div class="profile-info">
+      <p><strong>Nickname:</strong> <span id="profile-nickname">Loading...</span></p>
+      <p><strong>Email:</strong> <span id="profile-email">Loading...</span></p>
+      <p><strong>Tasks Completed:</strong> <span id="profile-completed">Loading...</span></p>
+    </div>
+    <button id="logout-btn" class="logout-button">🚪 Logout</button>
+  </div>
+</div>
+
+<div id="profile-modal" class="modal hidden">
+    <div class="modal-content">
+      <span id="profile-close" class="close">&times;</span>
+        <h2>👤 Your Profile</h2>
+        <hr />
+        <div style="margin-top: 1rem;">
+          <p><strong>Nickname:</strong> <span id="profile-nickname">Loading...</span></p>
+          <br>
+          <p><strong>Email:</strong> <span id="profile-email">Loading...</span></p>
+          <br>
+          <p><strong>Tasks Completed:</strong> <span id="profile-completed">0</span></p>
+        </div>
+            <button id="logout-btn" class="logout-btn">🚪 Logout</button>
+    </div>
+  </div>
+  <!-- External JS -->
+  <script src="/static/js/dashboard.js"></script>
+</body>
+</html>

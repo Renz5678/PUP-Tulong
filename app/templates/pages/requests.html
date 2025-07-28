@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PUP Tulong - Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/static/css/requests.css" />
+  <style>
+    .taskview {
+      position: relative;
+    }
+
+    .task-detail-modal {
+      display: none;
+      position: absolute;
+      top: 80px;
+      right: 0;
+      width: 100%;
+      max-width: 600px;
+      background-color: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+      z-index: 10;
+    }
+
+    .task-detail-modal.active {
+      display: block;
+    }
+
+    .task-detail-modal .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 14px;
+      font-size: 24px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #333;
+    }
+
+    .task-detail-modal .task-header,
+    .task-detail-modal .task-content {
+      margin-top: 1rem;
+    }
+
+    .task-detail-modal .task-image {
+      width: 100%;
+      max-height: 250px;
+      object-fit: cover;
+      margin-top: 1rem;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav-container">
+    <div class="nav-left">
+      <div class="nav-item"><a href="/dashboard">✪ Dashboard</a></div>
+      <div class="nav-item"><a href="/tasks">Task Manager</a></div>
+      <div class="nav-item active"><a href="/requests">Personal Requests</a></div>
+      <div class="nav-item"><a href="/ratings">Your Ratings</a></div>
+    </div>
+    <div class="nav-right">
+      <button class="notification-icon" id="notif-btn">🔔</button>
+      <button id="profile-btn" class="profile-section">
+        <div class="profile-avatar"></div>
+        <span>Profile</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-container">
+<div class="tasks-section">
+  <h2 class="section-title">Ongoing Requests</h2>
+  <div class="section-line"></div>
+  <div id="taskList"></div>
+
+  <h2 class="section-title">Completed Requests</h2>
+  <div class="section-line"></div>
+  <div id="completed_taskList"></div>
+</div>
+
+    <div class="taskview">
+      <div class="search-bar">
+        <input type="text" id="searchInput" class="search-box" placeholder="Search requests..." autocomplete="off"/>
+        <button id="searchButton"><img src="Search_Magnifying_Glass.svg" alt=""></button>
+      </div>
+
+      <div class="task-container hidden" id="taskContainer">
+        <div class="task-details">
+          Title: <span id="injectedTitle"></span><br>
+          Posted by: <span id="injectedPoster"></span><br>
+          <br>
+          <span id="injectedDescription">
+            Requests will appear here
+          </span>
+          <!-- optional image here -->
+          <div class="buttons">
+            <button class="cancel">Cancel Request</button>
+            <button class="finish">Finish Request</button>
+          </div>
+        </div>
+
+        <div class="verticalline"></div>
+
+        <div class="task-sidebar">
+          <div class="task-description">
+            Deadline: <span id="injectedDeadline"></span><br>
+            Modality: <span id="injectedModality"></span><br>
+            Payment: <span id="injectedPayment"></span>
+          </div>
+
+          <div class="rules">
+            Please be reminded that all posts must abide by the following rules:
+            <ol style="margin-left: 1.2rem;">
+              <li>Be clear and respectful</li>
+              <li>Offer incentives if possible</li>
+              <li>Respect onsite safety</li>
+              <li>Do not spam</li>
+              <li>Mark tasks as complete</li>
+              <li>Avoid inappropriate content</li>
+              <li>Respond promptly and honestly</li>
+              <li>Don’t use this platform for advertising or promotions</li>
+            </ol>
+            Violation may lead to account restriction, suspension, or deletion.
+            <br><br>Happy tasking!
+          </div>
+
+          <button class="rate-helper">Rate Helper</button>
+        </div>
+      </div>
+
+      <!-- Task Detail Modal -->
+      <div class="task-detail-modal" id="taskDetailModal">
+        <button class="close-btn" onclick="closeTaskDetail()">×</button>
+        <div class="task-header">
+          <div class="user-section">
+            <div class="user-avatar">👤</div>
+            <div class="user-info">
+              <div class="username" id="taskUsername">Loading...</div>
+              <div class="user-status">Anonymous</div>
+            </div>
+          </div>
+          <div class="task-meta-info">
+            <div class="meta-item"><span class="meta-label">Deadline:</span> <span id="taskDeadlineText">Loading...</span></div>
+            <div class="meta-item"><span class="meta-label">Modality:</span> <span id="taskModalityText">Loading...</span></div>
+            <div class="meta-item"><span class="meta-label">Payment:</span> <span id="taskPaymentText">Loading...</span></div>
+          </div>
+        </div>
+
+        <div class="task-content">
+          <div class="task-text-content">
+            <h2 class="task-title" id="taskTitle">Loading...</h2>
+            <p class="task-description" id="taskDescription">Loading description...</p>
+          </div>
+          <img src="" alt="Task image" class="task-image" id="taskImage">
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Floating Add Button -->
+  <button id="open-task-form" class="floating-button" title="New Task">+</button>
+
+  <!-- Task Form Modal -->
+  <div id="task-form-overlay" class="task-form-overlay">
+    <div class="task-form-modal">
+      <span id="close-task-form" class="task-form-close">&times;</span>
+      <h1>TASK REQUEST</h1>
+      <hr>
+      <form id="taskRequestForm" enctype="multipart/form-data" method="post">
+        <div><input type="text" name="title" class="form-input" required placeholder="Request Name*" /></div>
+        <div><input name="description" required placeholder="Description*" class="form-input" /></div>
+        <div>
+          <select name="mode" required class="form-input" id="mode-select">
+            <option value="" disabled selected>Modality*</option>
+            <option value="onsite">Onsite</option>
+            <option value="online">Online</option>
+          </select>
+        </div>
+        <div id="location-wrapper" style="display: none;">
+          <input type="text" name="location" placeholder="Location*" class="form-input" />
+        </div>
+        <div><input type="datetime-local" name="deadline" required class="form-input" /></div>
+        <div><input type="text" name="price" placeholder="e.g. 200 or Negotiable" class="form-input" /></div>
+        <div><input type="text" name="tags" placeholder="Tags (comma-separated)" class="form-input" /></div>
+        <div class="buttons-container">
+          <div>
+            <label for="task-image">📷 Insert Photo</label>
+            <input type="file" id="task-image" name="image" accept="image/*" class="form-input" />
+          </div>
+          <button type="submit" class="submit-task-btn">📲 Post</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Profile Modal -->
+  <div id="profile-modal" class="modal hidden">
+    <div class="modal-content">
+      <span id="profile-close" class="close">&times;</span>
+      <h2>👤 Your Profile</h2>
+      <hr />
+      <div style="margin-top: 1rem;">
+        <p><strong>Nickname:</strong> <span id="profile-nickname">Loading...</span></p><br>
+        <p><strong>Email:</strong> <span id="profile-email">Loading...</span></p><br>
+        <p><strong>Tasks Completed:</strong> <span id="profile-completed">0</span></p>
+      </div>
+      <button id="logout-btn" class="logout-btn">🚪 Logout</button>
+    </div>
+  </div>
+<script src="/static/js/requests.js"></script>
+</body>
+</html>
