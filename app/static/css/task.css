@@ -19,94 +19,94 @@
         }
 
         /* Navigation Bar */
-        .nav-container {
-            background: #222222;
-            border: 1px solid #e9ecef;
-            border-radius: 25px;
-            padding: 8px;
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
-            margin-bottom: 30px;
-        }
+.nav-container {
+    background: #252525;
+    border: 1px solid #e9ecef;
+    border-radius: 25px;
+    padding: 8px;
+    margin: 0 auto 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+}
 
-        .nav-left {
-            display: flex;
-            gap: 0px;
-        }
+.nav-left {
+    display: flex;
+    gap: 0px;
+    flex-wrap: wrap;
+}
 
-        .nav-item {
-            padding: 18px 16px;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            font-weight: 400;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #ffffff;
-        }
+.nav-item {
+    padding: 8px 16px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #ffffff;
+    transition: background-color 0.3s;
+}
 
-        .nav-item.active {
-            background: #4a4a4a;
-            color: white;
-            font-weight: 500;
-        }
+.nav-item.active {
+    background: #4a4a4a;
+    font-weight: 500;
+}
 
-        .nav-item:hover:not(.active) {
-            background: #3a3a3a;
-        }
+.nav-item:hover:not(.active) {
+    background: #3a3a3a;
+}
 
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
 
-        .notification-icon {
-            background: #4a4a4a;
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
+.notification-icon {
+    background: #4a4a4a;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
 
-        .notification-icon:hover {
-            background: #5a5a5a;
-        }
+.notification-icon:hover {
+    background: #5a5a5a;
+}
 
-        .profile-section {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: transparent;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            color: #ffffff;
-        }
+.profile-section {
+  background: #4a4a4a;
+    display: flex;
+    border: none;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 12px;
+    border-radius: 15px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    outline: none;
+    box-shadow: none;
+}
 
-        .profile-section:hover {
-            background: #5a5a5a;
-        }
+.profile-section:hover {
+    background: #5a5a5a;
+}
 
-        .profile-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-        }
+.profile-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+}
+
 
         /* Main Content */
         .main-container {
@@ -441,6 +441,29 @@
 
         .cancel-btn:hover {
             background-color: #FFC107;
+            transform: translateY(-2px);
+        }
+
+        .complete-btn {
+            background-color: #6D090B;
+            color: #FFB222;
+            border: none;
+            padding: 15px;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: 600;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            width: 100%;
+            height: 50px;
+        }
+
+        .complete-btn:hover {
+            background-color:#6D090B;
             transform: translateY(-2px);
         }
 

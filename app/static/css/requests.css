@@ -323,6 +323,7 @@ button {
 .finish {
   background-color: #FFB222;
   color: #6D090B;
+  display: none;
 }
 
 .caption {

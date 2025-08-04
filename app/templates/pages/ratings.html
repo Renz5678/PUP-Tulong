@@ -6,10 +6,12 @@
   <title>PUP Tulong - Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="/static/css/dashboard.css"/>
+  <link rel="stylesheet" href="/static/css/profile.css" />
+
 </head>
 <body>
   <!-- Navigation -->
-  <nav class="nav-container">
+  <nav class="nav-continer">
     <div class="nav-left">
       <div class="nav-item"><a href="/dashboard">✪ Dashboard</a></div>
       <div class="nav-item"><a href="/tasks">Task Manager</a></div>
@@ -17,12 +19,15 @@
       <div class="nav-item active"><a href="/ratings">Your Ratings</a></div>
     </div>
     <div class="nav-right">
-      <button class="notification-icon" id="notif-btn">🔔</button>
-      <div class="profile-section" id="profile-btn">
+      <div class="notification-icon" id="notif-btn">
+        <div class="notification">🔔</div>
+        <span class="red-dot" id="notifDot"></span>
+      </div>
+      <button id="profile-btn" class="profile-section">
         <div class="profile-avatar"></div>
         <span>Profile</span>
+      </button>
       </div>
-    </div>
   </nav>
 
   <!-- Main Content -->
@@ -32,35 +37,23 @@
     </section>
   </main> 
 
-  <div id="profile-modal" class="modal hidden">
-  <div class="modal-content" id="profile-content">
-    <span class="close" id="profile-close">&times;</span>
-    <h2>User Profile</h2>
-    <div class="profile-info">
+<div id="profile-wrapper" class="profile-modal hidden">
+  <div class="profile-modal-content">
+    <span id="profile-close" class="profile-close-btn">&times;</span>
+    <h2>👤 Your Profile</h2>
+    <hr />
+    <div style="margin-top: 1rem;">
       <p><strong>Nickname:</strong> <span id="profile-nickname">Loading...</span></p>
+      <br>
       <p><strong>Email:</strong> <span id="profile-email">Loading...</span></p>
-      <p><strong>Tasks Completed:</strong> <span id="profile-completed">Loading...</span></p>
+      <br>
+      <p><strong>Tasks Completed:</strong> <span id="profile-completed">0</span></p>
     </div>
-    <button id="logout-btn" class="logout-button">🚪 Logout</button>
+    <button id="logout-btn" class="profile-logout-btn">🚪 Logout</button>
   </div>
 </div>
-
-<div id="profile-modal" class="modal hidden">
-    <div class="modal-content">
-      <span id="profile-close" class="close">&times;</span>
-        <h2>👤 Your Profile</h2>
-        <hr />
-        <div style="margin-top: 1rem;">
-          <p><strong>Nickname:</strong> <span id="profile-nickname">Loading...</span></p>
-          <br>
-          <p><strong>Email:</strong> <span id="profile-email">Loading...</span></p>
-          <br>
-          <p><strong>Tasks Completed:</strong> <span id="profile-completed">0</span></p>
-        </div>
-            <button id="logout-btn" class="logout-btn">🚪 Logout</button>
-    </div>
-  </div>
   <!-- External JS -->
   <script src="/static/js/dashboard.js"></script>
+  <script src="/static/js/profile.js"></script>
 </body>
 </html>

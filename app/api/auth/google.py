@@ -25,11 +25,7 @@ oauth.register(
 # ✅ Login Route
 @router.get("/auth/login/google", name="google_login")
 async def login_with_google(request: Request):
-<<<<<<< HEAD:api/auth/google.py
-    redirect_uri = request.url_for("auth_google_callback")  # ✅ Now this matches the callback route below
-=======
     redirect_uri = str(request.url_for("auth_google_callback"))
->>>>>>> new-feature:app/api/auth/google.py
     print("🔁 Google Redirect URI:", redirect_uri)
     return await oauth.google.authorize_redirect(request, redirect_uri)
 
@@ -61,11 +57,7 @@ async def auth_google_callback(request: Request):
         jwt_token = create_jwt(email, nickname)
 
         # ✅ Set cookie and redirect to dashboard
-<<<<<<< HEAD:api/auth/google.py
-        response = RedirectResponse(url="/static/dashboard.html", status_code=302)
-=======
         response = RedirectResponse(url="/dashboard", status_code=302)
->>>>>>> new-feature:app/api/auth/google.py
         response.set_cookie(
             key="token",
             value=jwt_token,

@@ -8,6 +8,9 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
     token = credentials.credentials
     try:
         payload = decode_jwt(token)
-        return payload["sub"]
+        return {
+            "email": payload["sub"],  # this is your user_email
+            "nickname": payload.get("nickname")  # include this if you encoded it
+        }
     except Exception:
         raise HTTPException(status_code=401, detail="Invalid or expired token")

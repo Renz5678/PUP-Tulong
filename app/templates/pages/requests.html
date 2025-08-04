@@ -6,6 +6,7 @@
   <title>PUP Tulong - Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="/static/css/requests.css" />
+  <link rel="stylesheet" href="/static/css/profile.css" />
   <style>
     .taskview {
       position: relative;
@@ -63,13 +64,16 @@
       <div class="nav-item active"><a href="/requests">Personal Requests</a></div>
       <div class="nav-item"><a href="/ratings">Your Ratings</a></div>
     </div>
-    <div class="nav-right">
-      <button class="notification-icon" id="notif-btn">🔔</button>
+        <div class="nav-right">
+      <div class="notification-icon" id="notif-btn">
+        <div class="notification">🔔</div>
+        <span class="red-dot" id="notifDot"></span>
+      </div>
       <button id="profile-btn" class="profile-section">
         <div class="profile-avatar"></div>
         <span>Profile</span>
       </button>
-    </div>
+      </div>
   </nav>
 
   <!-- Main Content -->
@@ -199,20 +203,23 @@
     </div>
   </div>
 
-  <!-- Profile Modal -->
-  <div id="profile-modal" class="modal hidden">
-    <div class="modal-content">
-      <span id="profile-close" class="close">&times;</span>
-      <h2>👤 Your Profile</h2>
-      <hr />
-      <div style="margin-top: 1rem;">
-        <p><strong>Nickname:</strong> <span id="profile-nickname">Loading...</span></p><br>
-        <p><strong>Email:</strong> <span id="profile-email">Loading...</span></p><br>
-        <p><strong>Tasks Completed:</strong> <span id="profile-completed">0</span></p>
-      </div>
-      <button id="logout-btn" class="logout-btn">🚪 Logout</button>
+<div id="profile-wrapper" class="profile-modal hidden">
+  <div class="profile-modal-content">
+    <span id="profile-close" class="profile-close-btn">&times;</span>
+    <h2>👤 Your Profile</h2>
+    <hr />
+    <div style="margin-top: 1rem;">
+      <p><strong>Nickname:</strong> <span id="profile-nickname">Loading...</span></p>
+      <br>
+      <p><strong>Email:</strong> <span id="profile-email">Loading...</span></p>
+      <br>
+      <p><strong>Tasks Completed:</strong> <span id="profile-completed">0</span></p>
     </div>
+    <button id="logout-btn" class="profile-logout-btn">🚪 Logout</button>
   </div>
+</div>
 <script src="/static/js/requests.js"></script>
+  <script src="/static/js/profile.js"></script>
+
 </body>
 </html>

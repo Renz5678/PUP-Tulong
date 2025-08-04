@@ -1,3 +1,67 @@
+.profile-modal {
+  position: fixed !important;
+  z-index: 999 !important;
+  top: 15vh !important;
+  left: 73vw !important;
+  width: 23% !important;
+  height: 60vh !important;
+  display: flex !important;
+  justify-content: left !important;
+  align-items: center !important;
+}
+
+.profile-modal.hidden {
+  display: none !important;
+}
+
+.profile-modal-content {
+  background-color: #252525 !important;
+  color: white !important;
+  padding: 1rem !important;
+  border-radius: 12px !important;
+  max-width: 400px !important;
+  width: 90% !important;
+  height: 100% !important;
+  position: relative !important;
+}
+
+.profile-close-btn {
+  position: absolute !important;
+  top: 1rem !important;
+  right: 1.5rem !important;
+  font-size: 1.5rem !important;
+  cursor: pointer !important;
+}
+
+.profile-logout-btn {
+  background: #750000 !important;
+  color: white !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  padding: 10px 20px !important;
+  border: none !important;
+  margin-top: 20px !important;
+  border-radius: 2rem !important;
+  cursor: pointer !important;
+  width: 90% !important;
+  position: absolute !important;
+  bottom: 12px !important;
+  right: 14px !important;
+}
+
+.profile-section {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    background-color: #252525 !important;
+    padding: 6px 12px !important;
+    border-radius: 15px !important;
+    color: #ffffff !important;
+    cursor: pointer !important;
+    transition: background-color 0.3s !important;
+    border: none;
+}
+
 /* Reset & Base Styles */
 * {
     margin: 0;
@@ -358,10 +422,9 @@ a:active {
 .floating-button {
   position: fixed;
   bottom: 20px;
-  font-weight: 1000;
   right: 20px;
-  background-color: #FFB222;
-  color: #6d090b;
+  background-color: #6d090b;
+  color: white;
   border: none;
   border-radius: 50%;
   width: 60px;
@@ -527,7 +590,7 @@ input[type="file"].form-input {
 /* Add to dashboard.css */
 
 .modal-content {
-  height: 80vh;
+  height: 60vh;
 }
 
 #profile-modal {
@@ -578,6 +641,63 @@ input[type="file"].form-input {
   position: absolute;
 }
 
+/* Notification Container */
+.notification-icon {
+  position: relative;
+  cursor: pointer;
+}
+
+/* Red Dot */
+.red-dot {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  height: 10px;
+  width: 10px;
+  background-color: red;
+  border-radius: 50%;
+  box-shadow: 0 0 5px red;
+  z-index: 2;
+}
+
+/* Notification Bell */
+.notification {
+  font-size: 1.5rem;
+  padding: 0.5rem;
+  background-color: #4a4a4a;;
+  border-radius: 50%;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.notification:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Dropdown */
+.notif-dropdown {
+  position: absolute;
+  top: 120%;
+  right: 0;
+  background-color: #333;
+  color: white;
+  width: 250px;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 100;
+}
+
+/* Hidden class for toggling dropdown */
+.hidden {
+  display: none;
+}
+
+
 /* Responsive Design */
 @media (max-width: 1024px) {
     .tasks-grid {
@@ -612,4 +732,3 @@ input[type="file"].form-input {
         padding: 15px;
     }
 }
-

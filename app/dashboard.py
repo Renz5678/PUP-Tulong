@@ -11,6 +11,7 @@ from app.api.task import dynamodb_requests
 from app.api.task.dynamodb_requests import get_table
 from decimal import Decimal
 from typing import Optional
+from app.routers.notifications import create_notification
 
 router = APIRouter(tags=["Dashboard"])
 templates = Jinja2Templates(directory="app/templates")
@@ -95,6 +96,16 @@ async def accept_request(request_id: str, user=Depends(get_current_user)):
     result = dynamodb_requests.accept_request(request_id, user["sub"])
     if "error" in result:
         raise HTTPException(status_code=400, detail=result["error"])
+
+    # ✅ Notify the task creator only
+    task = dynamodb_requests.get_request_by_id(request_id)
+    if task and "email" in task:
+        create_notification(
+            email=task["email"],
+            message=f"Your task '{task['title']}' was claimed by {user['nickname'] or user['sub']}",
+            link="/dashboard"
+        )
+
     return result
 
 
@@ -130,7 +141,14 @@ async def get_claimed_tasks(user=Depends(get_current_user)):
 
 @router.get("/unclaimed_tasks")
 async def get_unclaimed_tasks(user=Depends(get_current_user)):
+    print("🧪 Current user:", user)
+
     all_tasks = dynamodb_requests.get_all_requests()
+    print("🧪 Total tasks found:", len(all_tasks))
+
+    for t in all_tasks:
+        print("  •", t["title"], "| created by:", t.get("email"), "| accepted by:", t.get("accepted_by"))
+
     unclaimed = [
         req for req in all_tasks
         if (not req.get("accepted_by") or req["accepted_by"].strip() == "")
@@ -138,6 +156,7 @@ async def get_unclaimed_tasks(user=Depends(get_current_user)):
     ]
     print(f"✅ Returning {len(unclaimed)} unclaimed tasks.")
     return unclaimed
+
 
 @router.put("/request/{request_id}/mark_completed")
 async def mark_task_completed(request_id: str, user=Depends(get_current_user)):

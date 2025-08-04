@@ -1,3 +1,5 @@
+console.log("✅ JS loaded!");
+
 document.addEventListener("DOMContentLoaded", () => {
   let taskCache = null;
 
@@ -95,8 +97,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.getElementById("tasks-tab")?.click(); // ✅ Load tasks immediately
-
-  document.getElementById("notif-btn")?.addEventListener("click", () => alert("Notifications clicked!"));
 
   taskModalClose.addEventListener("click", closeModal);
 
@@ -245,4 +245,5 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("⚠️ Network error while logging out.");
     }
   });
+
 });

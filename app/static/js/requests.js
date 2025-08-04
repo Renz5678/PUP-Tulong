@@ -59,13 +59,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // UI button handlers
-  document.querySelector(".notification-icon")?.addEventListener("click", () => {
-    alert("Notifications clicked!");
-  });
-
-  document.querySelector(".profile-section")?.addEventListener("click", () => {
-    alert("Profile clicked!");
-  });
 });
 
 // Create each request item in the list (title only)
@@ -110,4 +103,46 @@ function showTaskDetail(taskId) {
     imageElement.src = "";
     imageElement.style.display = "none";
   }
+
+  // Show/hide finish button based on whether the task is claimed
+  const finishButton = document.querySelector(".finish");
+  if (data.claimed_by) {
+    finishButton.style.display = "inline-block";
+  } else {
+    finishButton.style.display = "none";
+  }
+
+    const rateButton = document.querySelector(".rate-helper");
+  if (data.claimed_by) {
+    rateButton.style.display = "inline-block";
+  } else {
+    rateButton.style.display = "none";
+  }
+
+  document.querySelector(".cancel").onclick = async () => {
+  const data = requestedTasks[taskId];
+  if (!data || !confirm("Are you sure you want to cancel this request?")) return;
+
+  try {
+    const res = await fetch(`/dashboard/request/${data.id}`, {
+      method: "DELETE",
+    });
+
+    if (res.ok) {
+      alert("✅ Request cancelled successfully.");
+      // Remove from cache and UI
+      delete requestedTasks[taskId];
+      document.getElementById("taskContainer").classList.add("hidden");
+      document.getElementById("taskList").innerHTML = "";
+      // Optionally: reload requests from server again
+      location.reload(); // or call fetch again to update list
+    } else {
+      const error = await res.json();
+      alert(`❌ Failed to cancel: ${error.detail || "Unknown error"}`);
+    }
+  } catch (err) {
+    console.error("Cancel error:", err);
+    alert("⚠️ Network error. Please try again.");
+  }
+};
 }
