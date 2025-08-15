@@ -76,7 +76,15 @@ document.addEventListener("DOMContentLoaded", () => {
       const tabId = item.id;
       if (tabId === "tasks-tab") {
         const container = document.getElementById("tasks-container");
-        container.innerHTML = "<p style='padding: 1rem; color: #ccc;'>Loading tasks...</p>";
+        const noContent = document.getElementById("noContent");
+        
+        // Clear container but don't show loading text
+        container.innerHTML = "";
+        
+        // Hide noContent while fetching
+        if (noContent) {
+          noContent.style.display = "none";
+        }
 
         if (!taskCache) {
           fetch("/dashboard/unclaimed_tasks")
@@ -88,6 +96,10 @@ document.addEventListener("DOMContentLoaded", () => {
             .catch(err => {
               console.error("Error fetching tasks:", err);
               container.innerHTML = "<p style='padding: 1rem; color: red;'>Failed to load tasks.</p>";
+              // Show noContent again if there's an error
+              if (noContent) {
+                noContent.style.display = "block";
+              }
             });
         } else {
           renderTasks(taskCache);
@@ -102,7 +114,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderTasks(tasks) {
     const container = document.getElementById("tasks-container");
+    const noContent = document.getElementById("noContent");
+    
     container.innerHTML = "";
+
+    // Hide noContent when tasks are being rendered
+    if (noContent) {
+      noContent.style.display = "none";
+    }
+
+    // If no tasks, show noContent
+    if (!tasks || tasks.length === 0) {
+      if (noContent) {
+        noContent.style.display = "block";
+      }
+      return;
+    }
 
     tasks.forEach(task => {
       const card = document.createElement("div");
@@ -202,7 +229,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   profileBtn?.addEventListener("click", async () => {
-    const modal = document.getElementById("profile-modal");
+    const modal = document.getElementById("profile-wrapper");
     modal.classList.remove("hidden");
     modal.classList.add("show");
 
@@ -221,7 +248,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       document.getElementById("profile-nickname").textContent = profileData.nickname || "N/A";
       document.getElementById("profile-email").textContent = profileData.email || "N/A";
-      document.getElementById("profile-completed").textContent = completedTasks.length;
     } catch (err) {
       console.error("❌ Failed to load profile info:", err);
       alert("⚠️ Failed to load your profile.");

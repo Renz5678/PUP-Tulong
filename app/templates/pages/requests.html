@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PUP Tulong - Dashboard</title>
+  <link rel="icon" type="image/png" href="/static/icons/icon.png">
+
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="/static/css/requests.css" />
   <link rel="stylesheet" href="/static/css/profile.css" />
@@ -68,12 +70,18 @@
       <div class="notification-icon" id="notif-btn">
         <div class="notification">🔔</div>
         <span class="red-dot" id="notifDot"></span>
+
+        <div id="notif-dropdown" class="notif-dropdown hidden">
+          <div class="notif-header">Notifications</div>
+          <div id="notif-list" class="notif-list"></div>
+        </div>
       </div>
       <button id="profile-btn" class="profile-section">
         <div class="profile-avatar"></div>
         <span>Profile</span>
       </button>
       </div>
+    </div>
   </nav>
 
   <!-- Main Content -->
@@ -89,11 +97,13 @@
 </div>
 
     <div class="taskview">
-      <div class="search-bar">
-        <input type="text" id="searchInput" class="search-box" placeholder="Search requests..." autocomplete="off"/>
-        <button id="searchButton"><img src="Search_Magnifying_Glass.svg" alt=""></button>
+      <div class="noContent">
+        <svg xmlns="http://www.w3.org/2000/svg" width="164" height="164" viewBox="0 0 164 164" fill="none">
+          <path d="M15.9556 70.6346C13.815 68.6551 14.9778 65.0765 17.873 64.7332L58.8975 59.8673C60.0775 59.7274 61.1024 58.9864 61.6001 57.9074L78.9036 20.3938C80.1248 17.7463 83.8885 17.7458 85.1097 20.3933L102.413 57.9066C102.911 58.9856 103.929 59.7286 105.109 59.8685L146.136 64.7332C149.031 65.0765 150.191 68.6562 148.05 70.6357L117.723 98.6864C116.851 99.4931 116.462 100.694 116.694 101.859L124.743 142.379C125.311 145.239 122.267 147.454 119.723 146.03L83.6752 125.847C82.6383 125.266 81.3786 125.269 80.3417 125.85L44.2898 146.025C41.7457 147.449 38.6968 145.239 39.265 142.379L47.315 101.862C47.5466 100.697 47.1591 99.4929 46.2867 98.6861L15.9556 70.6346Z" stroke="#FFB222" stroke-width="13.6667" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Not viewing a request. <br>
+        Select a request to view it here.
       </div>
-
       <div class="task-container hidden" id="taskContainer">
         <div class="task-details">
           Title: <span id="injectedTitle"></span><br>
@@ -103,9 +113,12 @@
             Requests will appear here
           </span>
           <!-- optional image here -->
+          <img src="" alt="Task image" id="taskImage" style="display: none; width: 100%; max-height: 300px; object-fit: cover; margin-top: 1rem; border-radius: 8px;">
+          
           <div class="buttons">
             <button class="cancel">Cancel Request</button>
-            <button class="finish">Finish Request</button>
+            <button class="rate-helper">Rate Helper</button>
+            <button class="finish">Confirm Completion</button>
           </div>
         </div>
 
@@ -128,13 +141,11 @@
               <li>Mark tasks as complete</li>
               <li>Avoid inappropriate content</li>
               <li>Respond promptly and honestly</li>
-              <li>Don’t use this platform for advertising or promotions</li>
+              <li>Don't use this platform for advertising or promotions</li>
             </ol>
             Violation may lead to account restriction, suspension, or deletion.
             <br><br>Happy tasking!
           </div>
-
-          <button class="rate-helper">Rate Helper</button>
         </div>
       </div>
 
@@ -171,35 +182,49 @@
   <button id="open-task-form" class="floating-button" title="New Task">+</button>
 
   <!-- Task Form Modal -->
-  <div id="task-form-overlay" class="task-form-overlay">
+  <div id="task-form-modal" class="task-form-overlay">
     <div class="task-form-modal">
       <span id="close-task-form" class="task-form-close">&times;</span>
       <h1>TASK REQUEST</h1>
       <hr>
-      <form id="taskRequestForm" enctype="multipart/form-data" method="post">
-        <div><input type="text" name="title" class="form-input" required placeholder="Request Name*" /></div>
-        <div><input name="description" required placeholder="Description*" class="form-input" /></div>
-        <div>
-          <select name="mode" required class="form-input" id="mode-select">
-            <option value="" disabled selected>Modality*</option>
-            <option value="onsite">Onsite</option>
-            <option value="online">Online</option>
-          </select>
-        </div>
-        <div id="location-wrapper" style="display: none;">
-          <input type="text" name="location" placeholder="Location*" class="form-input" />
-        </div>
-        <div><input type="datetime-local" name="deadline" required class="form-input" /></div>
-        <div><input type="text" name="price" placeholder="e.g. 200 or Negotiable" class="form-input" /></div>
-        <div><input type="text" name="tags" placeholder="Tags (comma-separated)" class="form-input" /></div>
-        <div class="buttons-container">
-          <div>
-            <label for="task-image">📷 Insert Photo</label>
-            <input type="file" id="task-image" name="image" accept="image/*" class="form-input" />
-          </div>
-          <button type="submit" class="submit-task-btn">📲 Post</button>
-        </div>
-      </form>
+
+        <form id="taskRequestForm" enctype="multipart/form-data" method="post" action="/create-task">
+    <div>
+      <input type="text" name="title" class="form-input" required placeholder="Request Name*" />
+    </div>
+    <div>
+      <input name="description" required placeholder="Description*" class="form-input" />
+    </div>
+    <div>
+      <select name="mode" required class="form-input" id="mode-select">
+        <option value="" disabled selected>Modality*</option>
+        <option value="onsite">Onsite</option>
+        <option value="online">Online</option>
+      </select>
+    </div>
+
+    <!-- Location field appears only if "onsite" is selected -->
+    <div id="location-wrapper" style="display: none;">
+      <input type="text" name="location" placeholder="Location*" class="form-input" />
+    </div>
+
+    <div>
+      <input type="datetime-local" name="deadline" required placeholder="Deadline*" class="form-input" />
+    </div>
+    <div>
+      <input type="text" name="price" placeholder="e.g. 200 or Negotiable" class="form-input" />
+    </div>
+    <div>
+      <input type="text" name="tags" placeholder="Tags (comma-separated)" class="form-input" />
+    </div>
+    <div class="buttons-container">
+      <div>
+        <label for="task-image">📷 Insert Photo</label>
+        <input type="file" id="task-image" name="image" accept="image/*" class="form-input" />
+      </div>
+      <button type="submit" class="submit-task-btn">📲 Post</button>
+    </div>
+  </form>
     </div>
   </div>
 
@@ -212,14 +237,89 @@
       <p><strong>Nickname:</strong> <span id="profile-nickname">Loading...</span></p>
       <br>
       <p><strong>Email:</strong> <span id="profile-email">Loading...</span></p>
-      <br>
-      <p><strong>Tasks Completed:</strong> <span id="profile-completed">0</span></p>
     </div>
     <button id="logout-btn" class="profile-logout-btn">🚪 Logout</button>
   </div>
 </div>
 <script src="/static/js/requests.js"></script>
-  <script src="/static/js/profile.js"></script>
+  <script src="/static/js/profile.js" async></script>
+  <script>
+    // Ensure modal functionality works
+    document.addEventListener('DOMContentLoaded', function() {
+      const openTaskFormBtn = document.getElementById('open-task-form');
+      const taskFormModal = document.getElementById('task-form-modal');
+      const closeTaskFormBtn = document.getElementById('close-task-form');
+      const modeSelect = document.getElementById('mode-select');
+      const locationWrapper = document.getElementById('location-wrapper');
+
+      // Open modal
+      if (openTaskFormBtn && taskFormModal) {
+        openTaskFormBtn.addEventListener('click', function() {
+          taskFormModal.style.display = 'flex';
+        });
+      }
+
+      // Handle form submission
+      const taskForm = document.getElementById('taskRequestForm');
+      if (taskForm) {
+        taskForm.addEventListener('submit', async function(e) {
+          e.preventDefault(); // Prevent default form submission
+          
+          const formData = new FormData(taskForm);
+          
+          try {
+            const response = await fetch('/dashboard/request', {
+              method: 'POST',
+              body: formData
+            });
+
+            if (response.ok) {
+              alert('✅ Task submitted!');
+              taskFormModal.style.display = 'none';
+              taskForm.reset();
+              // Optionally refresh the page or update the task list
+              window.location.reload();
+            } else {
+              const error = await response.json();
+              alert('❌ Failed to submit task:\n' + JSON.stringify(error.detail, null, 2));
+            }
+          } catch (err) {
+            console.error('❌ Error:', err);
+            alert('⚠️ Network error submitting form.');
+          }
+        });
+      }
+
+      // Close modal
+      if (closeTaskFormBtn && taskFormModal) {
+        closeTaskFormBtn.addEventListener('click', function() {
+          taskFormModal.style.display = 'none';
+        });
+      }
+
+      // Close modal when clicking outside
+      if (taskFormModal) {
+        taskFormModal.addEventListener('click', function(e) {
+          if (e.target === taskFormModal) {
+            taskFormModal.style.display = 'none';
+          }
+        });
+      }
+
+      // Show/hide location field based on modality selection
+      if (modeSelect && locationWrapper) {
+        modeSelect.addEventListener('change', function() {
+          if (this.value === 'onsite') {
+            locationWrapper.style.display = 'block';
+            locationWrapper.querySelector('input').required = true;
+          } else {
+            locationWrapper.style.display = 'none';
+            locationWrapper.querySelector('input').required = false;
+          }
+        });
+      }
+    });
+  </script>
 
 </body>
 </html>

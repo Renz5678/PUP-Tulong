@@ -1,107 +1,93 @@
-// 📌 Helper to get JWT token from cookies
-function getTokenFromCookie() {
-  const match = document.cookie.match(/(?:^|;\s*)token=([^;]*)/);
-  return match ? match[1] : null;
+async function loadProfileData() {
+    console.log("🔄 Loading profile data...");
+    try {
+        // Show loading placeholders
+        const setLoading = (id) => {
+            const element = document.getElementById(id);
+            if (element) element.textContent = 'Loading...';
+        };
+        setLoading('profile-nickname');
+        setLoading('profile-email');
+
+        // Fetch only the profile
+        const profileRes = await fetch(`/dashboard/profile?nocache=${Date.now()}`, { credentials: 'include' });
+
+        if (!profileRes.ok) throw new Error(`Profile fetch failed: ${profileRes.status}`);
+
+        const profileData = await profileRes.json();
+
+        console.log('✅ Profile data:', profileData);
+
+        // Update nickname and email
+        document.getElementById('profile-nickname').textContent = profileData.nickname || 'Not set';
+        document.getElementById('profile-email').textContent = profileData.email || 'Unknown';
+
+    } catch (err) {
+        console.error('❌ Error loading profile data:', err);
+        ['profile-nickname', 'profile-email'].forEach(id => {
+            const element = document.getElementById(id);
+            if (element) element.textContent = 'Error loading';
+        });
+    }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const profileModal = document.getElementById("profile-wrapper");
-  const closeBtn = document.getElementById("profile-close");
+function openProfile() {
+    console.log("🔓 Opening profile modal...");
+    const profileWrapper = document.getElementById('profile-wrapper');
+    if (profileWrapper) {
+        profileWrapper.classList.remove('hidden');
+        profileWrapper.classList.add('show');
+        loadProfileData();
+    }
+}
 
-  document.getElementById("profile-btn")?.addEventListener("click", async () => {
-    profileModal.classList.remove("hidden");
-    profileModal.classList.add("show");
+function closeProfile() {
+    console.log("🔒 Closing profile modal...");
+    const profileWrapper = document.getElementById('profile-wrapper');
+    if (profileWrapper) {
+        profileWrapper.classList.add('hidden');
+        profileWrapper.classList.remove('show');
+    }
+}
 
-    const token = getTokenFromCookie();
-    if (!token) {
-      alert("⚠️ You are not logged in.");
-      return;
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("🚀 Profile script ready!");
+
+    const profileBtn = document.getElementById('profile-btn');
+    if (profileBtn) {
+        profileBtn.addEventListener('click', openProfile);
     }
 
-    try {
-      const [profileRes, tasksRes] = await Promise.all([
-        fetch("/dashboard/profile", {
-          headers: { Authorization: `Bearer ${token}` }
-        }),
-        fetch("/dashboard/my_requests", {
-          headers: { Authorization: `Bearer ${token}` }
-        })
-      ]);
-
-      const profileData = await profileRes.json();
-      const myTasks = await tasksRes.json();
-
-      const completedTasks = Array.isArray(myTasks)
-        ? myTasks.filter(task => task.completion_status === "completed")
-        : [];
-
-      document.getElementById("profile-nickname").textContent = profileData.nickname || "N/A";
-      document.getElementById("profile-email").textContent = profileData.email || "N/A";
-      document.getElementById("profile-completed").textContent = completedTasks.length;
-    } catch (err) {
-      console.error("❌ Failed to load profile info:", err);
-      alert("⚠️ Failed to load your profile.");
+    const closeBtn = document.getElementById('profile-close');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeProfile);
     }
-  });
 
-  closeBtn?.addEventListener("click", () => {
-    profileModal.classList.add("hidden");
-    profileModal.classList.remove("show");
-  });
-});
-
-document.addEventListener("DOMContentLoaded", async () => {
-  const notifBtn = document.getElementById('notif-btn');
-  const notifDot = document.getElementById('notifDot');
-  const notifDropdown = document.getElementById('notif-dropdown');
-  const notifList = document.getElementById('notif-list');
-
-  let unseenCount = 0;
-  const token = getTokenFromCookie();
-  if (!token) return console.warn("⚠️ No token found in cookies");
-
-  // Fetch notifications from backend
-  try {
-    const res = await fetch("/dashboard/notifications", {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    const notifications = await res.json();
-
-    if (Array.isArray(notifications) && notifications.length > 0) {
-      notifList.innerHTML = notifications.map(n => `
-        <div style="padding: 0.5rem 0; border-bottom: 1px solid #555;">
-          <p style="margin: 0 0 4px;">${n.message}</p>
-          <small style="color: #aaa;">${new Date(n.timestamp).toLocaleString()}</small>
-        </div>
-      `).join("");
-
-      unseenCount = notifications.filter(n => !n.seen).length;
-      if (unseenCount > 0) notifDot.classList.remove("hidden");
-    } else {
-      notifList.innerHTML = "<p>No notifications yet.</p>";
-    }
-  } catch (err) {
-    console.error("❌ Failed to load notifications:", err);
-    notifList.innerHTML = "<p style='color: red;'>Failed to load notifications</p>";
-  }
-
-  notifBtn.addEventListener("click", async (e) => {
-    e.stopPropagation();
-    notifDropdown.classList.toggle("hidden");
-
-    if (unseenCount > 0) {
-      notifDot.classList.add("hidden");
-      try {
-        await fetch("/dashboard/notifications/mark_seen", {
-          method: "PUT",
-          headers: { Authorization: `Bearer ${token}` }
+    const profileWrapper = document.getElementById('profile-wrapper');
+    if (profileWrapper) {
+        profileWrapper.addEventListener('click', function(e) {
+            if (e.target === profileWrapper) {
+                closeProfile();
+            }
         });
-      } catch (err) {
-        console.warn("⚠️ Failed to mark notifications as seen");
-      }
     }
-  });
 
-  notifDropdown.addEventListener("click", (e) => e.stopPropagation());
-  window.addEventListener("click", () => notifDropdown.classList.add("hidden"));
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', async function() {
+            if (confirm('Are you sure you want to logout?')) {
+                const response = await fetch('/logout', { credentials: 'include' });
+                if (response.ok) {
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    window.location.href = '/login';
+                }
+            }
+        });
+    }
 });
+
+// Export functions for use in other scripts if needed
+window.openProfile = openProfile;
+window.closeProfile = closeProfile;
+window.loadProfileData = loadProfileData;

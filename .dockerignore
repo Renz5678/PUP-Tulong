@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# Node / Bun stuff (if any frontend or scripts)
+node_modules/
+bun.lockb
+
+# Git
+.git
+.gitignore
+
+# IDE/editor
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Other big files or data not needed in the image
+*.sqlite3
+*.db
+*.csv
+*.zip
+*.tar
+*.tar.gz

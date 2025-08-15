@@ -4,7 +4,9 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 from fastapi.templating import Jinja2Templates
+from mangum import Mangum
 from dotenv import load_dotenv
+load_dotenv()
 import os
 
 # Load .env variables
@@ -94,3 +96,5 @@ def logout(request: Request):
     response = RedirectResponse(url="/login", status_code=302)
     response.delete_cookie("session")
     return response
+
+handler = Mangum(app)

@@ -297,6 +297,23 @@
             gap: 15px;
         }
 
+        .task-item.completed {
+  background-color: #FFB222 !important;
+  opacity: 0.8;
+  cursor: default;
+  color: #6D090B;
+}
+
+.task-item .task-status {
+  font-size: 0.875rem;
+  margin-top: 4px;
+}
+
+.task-item.completed .task-title::after {
+  content: " ✅";
+  color: #10b981;
+}
+
         .user-section {
             display: flex;
             align-items: flex-start;

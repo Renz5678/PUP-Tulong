@@ -4,56 +4,73 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PUP Tulong - Dashboard</title>
+  <link rel="icon" type="image/png" href="/static/icons/icon.png">
+
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="/static/css/dashboard.css"/>
+  <link rel="stylesheet" href="/static/css/ratings.css"/>
   <link rel="stylesheet" href="/static/css/profile.css" />
 
 </head>
 <body>
   <!-- Navigation -->
-  <nav class="nav-continer">
+  <nav class="nav-container">
     <div class="nav-left">
-      <div class="nav-item"><a href="/dashboard">✪ Dashboard</a></div>
+      <div class="nav-item" id="tasks-tab"><a href="/dashboard">✪ Dashboard</a></div>
       <div class="nav-item"><a href="/tasks">Task Manager</a></div>
       <div class="nav-item"><a href="/requests">Personal Requests</a></div>
       <div class="nav-item active"><a href="/ratings">Your Ratings</a></div>
     </div>
     <div class="nav-right">
-      <div class="notification-icon" id="notif-btn">
-        <div class="notification">🔔</div>
-        <span class="red-dot" id="notifDot"></span>
-      </div>
+      <button class="notification-icon" id="notif-btn">🔔</button>
       <button id="profile-btn" class="profile-section">
         <div class="profile-avatar"></div>
         <span>Profile</span>
       </button>
       </div>
+    </div>
   </nav>
 
   <!-- Main Content -->
-  <!-- <main class="main-container">
-    <section class="tasks-grid" id="tasks-container">
-      <!-- Tasks dynamically injected here -->
-    </section>
-  </main> 
-
-<div id="profile-wrapper" class="profile-modal hidden">
-  <div class="profile-modal-content">
-    <span id="profile-close" class="profile-close-btn">&times;</span>
-    <h2>👤 Your Profile</h2>
-    <hr />
-    <div style="margin-top: 1rem;">
-      <p><strong>Nickname:</strong> <span id="profile-nickname">Loading...</span></p>
-      <br>
-      <p><strong>Email:</strong> <span id="profile-email">Loading...</span></p>
-      <br>
-      <p><strong>Tasks Completed:</strong> <span id="profile-completed">0</span></p>
+  <main class="main-container">
+    <div class="sort">
+        <h1>Sort By</h1>
+        <div class="section-line"></div>
+        <h3>Stars:</h3>
+        <button class="rating">5 Stars ⭐⭐⭐⭐⭐</button>
+        <button class="rating">4 Stars ⭐⭐⭐⭐</button>
+        <button class="rating">3 Stars ⭐⭐⭐</button>
+        <button class="rating">2 Stars ⭐⭐</button>
+        <button class="rating">1 Star ⭐</button>
+        <div class="section-line"></div>
+        <h3>Date:</h3>
+        <button class="rating">-> Most recent</button>
+        <button class="rating">-> Oldest</button>
+        <div class="section-line"></div>
+        <h3>Alphabetical:</h3>
+        <button class="rating">-> A-Z</button>
+        <button class="rating">-> Z-A</button>
     </div>
-    <button id="logout-btn" class="profile-logout-btn">🚪 Logout</button>
+
+    <div class="rating-container">
+        <div class="ratings-grid" id="ratings-container">
+        </div>
+    </div>
+  </main>
+
+  <div id="profile-modal" class="modal hidden">
+    <div class="modal-content">
+      <span id="profile-close" class="close">&times;</span>
+        <h2>👤 Your Profile</h2>
+        <hr />
+        <div style="margin-top: 1rem;">
+          <p><strong>Nickname:</strong> <span id="profile-nickname">Loading...</span></p>
+          <br>
+          <p><strong>Email:</strong> <span id="profile-email">Loading...</span></p>
+        </div>
+            <button id="logout-btn" class="logout-btn">🚪 Logout</button>
+    </div>
   </div>
-</div>
-  <!-- External JS -->
-  <script src="/static/js/dashboard.js"></script>
-  <script src="/static/js/profile.js"></script>
+  <script src="static/js/ratings.js"></script>
+  <script src="static/js/profile.js"></script>
 </body>
 </html>

@@ -4,11 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Task Manager - Task Viewer</title>
+  <link rel="icon" type="image/png" href="/static/icons/icon.png">
+
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/css/profile.css">
   <link rel="stylesheet" href="/static/css/task.css">
   <script src="/static/js/tasks.js"></script>
-  <script src="/static/js/profile.js"></script>
+  <script src="/static/js/profile.js" async></script>
 </head>
 <body>
   <nav class="nav-container">
@@ -22,12 +24,18 @@
       <div class="notification-icon" id="notif-btn">
         <div class="notification">🔔</div>
         <span class="red-dot" id="notifDot"></span>
+
+        <div id="notif-dropdown" class="notif-dropdown hidden">
+          <div class="notif-header">Notifications</div>
+          <div id="notif-list" class="notif-list"></div>
+        </div>
       </div>
       <button id="profile-btn" class="profile-section">
         <div class="profile-avatar"></div>
         <span>Profile</span>
       </button>
       </div>
+    </div>
   </nav>
 
   <main class="main-container">
@@ -39,7 +47,7 @@
 
       <h2 class="section-title">Completed Tasks</h2>
       <div class="section-line"></div>
-      <div id="completed_taskList"></div> <!-- Injected dynamically -->
+      <div id="completedTaskList"></div> <!-- Injected dynamically -->
     </div> 
 
     <!-- Task Detail Modal -->
@@ -85,7 +93,6 @@
       <br>
       <p><strong>Email:</strong> <span id="profile-email">Loading...</span></p>
       <br>
-      <p><strong>Tasks Completed:</strong> <span id="profile-completed">0</span></p>
     </div>
     <button id="logout-btn" class="profile-logout-btn">🚪 Logout</button>
   </div>

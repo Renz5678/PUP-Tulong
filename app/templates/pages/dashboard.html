@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PUP Tulong - Dashboard</title>
+  <link rel="icon" type="image/png" href="/static/icons/icon.png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="/static/css/dashboard.css" />
   <link rel="stylesheet" href="/static/css/profile.css" />
@@ -37,6 +38,14 @@
 
   <!-- Main Content -->
   <main class="main-container">
+    <div class="noContent" id="noContent">
+        <svg xmlns="http://www.w3.org/2000/svg" width="164" height="164" viewBox="0 0 164 164" fill="none">
+          <path d="M15.9556 70.6346C13.815 68.6551 14.9778 65.0765 17.873 64.7332L58.8975 59.8673C60.0775 59.7274 61.1024 58.9864 61.6001 57.9074L78.9036 20.3938C80.1248 17.7463 83.8885 17.7458 85.1097 20.3933L102.413 57.9066C102.911 58.9856 103.929 59.7286 105.109 59.8685L146.136 64.7332C149.031 65.0765 150.191 68.6562 148.05 70.6357L117.723 98.6864C116.851 99.4931 116.462 100.694 116.694 101.859L124.743 142.379C125.311 145.239 122.267 147.454 119.723 146.03L83.6752 125.847C82.6383 125.266 81.3786 125.269 80.3417 125.85L44.2898 146.025C41.7457 147.449 38.6968 145.239 39.265 142.379L47.315 101.862C47.5466 100.697 47.1591 99.4929 46.2867 98.6861L15.9556 70.6346Z" stroke="#FFB222" stroke-width="13.6667" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <br>
+        No requests available. <br>
+        Try refreshing😊👌
+    </div>
     <section class="tasks-grid" id="tasks-container"></section>
 
     <section id="task-manager-page" style="display: none; padding: 2rem;">
@@ -118,8 +127,6 @@
       <p><strong>Nickname:</strong> <span id="profile-nickname">Loading...</span></p>
       <br>
       <p><strong>Email:</strong> <span id="profile-email">Loading...</span></p>
-      <br>
-      <p><strong>Tasks Completed:</strong> <span id="profile-completed">0</span></p>
     </div>
     <button id="logout-btn" class="profile-logout-btn">🚪 Logout</button>
   </div>

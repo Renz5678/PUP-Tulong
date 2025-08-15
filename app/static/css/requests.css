@@ -261,6 +261,17 @@ img {
   font-size: 12px;
 }
 
+.noContent {
+  display: flex;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+  font-family: Inter;
+  flex-direction: column;
+}
+
 .rules {
   padding: 8px;
   border-radius: 12px;
@@ -595,6 +606,24 @@ input[type="file"].form-input {
             opacity: 1;
             transform: scale(1);
         }
+
+        .task-item.completed {
+    background-color: #f0f9ff;
+}
+
+.task-item.completed .task-title::after {
+    content: " ✅";
+    color: #10b981;
+}
+
+.completed_taskList {
+    margin-top: 2rem;
+}
+
+.completed_taskList .task-item {
+    opacity: 0.8;
+    cursor: default;
+}
 
 .modal-content {
   height: 60vh;
